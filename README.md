@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/branding/sevenflow-logo-horizontal.png" alt="SevenFlow" width="420">
+  <img src="assets/branding/sevenflow-logo-horizontal.svg" alt="SevenFlow" width="420">
 </p>
 
 <p align="center">
@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/sevenflow-week-5-day.svg" alt="SevenFlow 5 day weekly planning view" width="900">
+  <img src="docs/screenshots/sevenflow-week-5-day.png" alt="SevenFlow 5 day weekly planning view" width="900">
 </p>
 
 # SevenFlow
@@ -50,13 +50,13 @@ It is not trying to replace a full project-management suite. It is meant to be t
 ### 5 Day View
 
 <p align="center">
-  <img src="docs/screenshots/sevenflow-week-5-day.svg" alt="SevenFlow 5 day weekly planning view" width="900">
+  <img src="docs/screenshots/sevenflow-week-5-day.png" alt="SevenFlow 5 day weekly planning view" width="900">
 </p>
 
 ### 3 Day Focused View
 
 <p align="center">
-  <img src="docs/screenshots/sevenflow-week-3-day.svg" alt="SevenFlow 3 day focused planning view" width="720">
+  <img src="docs/screenshots/sevenflow-week-3-day.png" alt="SevenFlow 3 day focused planning view" width="720">
 </p>
 
 ## Features
