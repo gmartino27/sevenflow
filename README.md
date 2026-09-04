@@ -10,6 +10,7 @@
   <a href="#why-sevenflow">Why</a> |
   <a href="#features">Features</a> |
   <a href="#quick-start-local-mode">Quick start</a> |
+  <a href="#android-app-coming-soon">Android</a> |
   <a href="#self-hosting">Self-hosting</a> |
   <a href="#plugins">Plugins</a>
 </p>
@@ -58,6 +59,10 @@ It is not trying to replace a full project-management suite. It is meant to be t
 <p align="center">
   <img src="docs/screenshots/sevenflow-week-3-day.png" alt="SevenFlow 3 day focused planning view" width="720">
 </p>
+
+## Android App Coming Soon
+
+An Android app already exists and is being tested, but it still needs final polishing before it is published as part of the open-source release. The web app is the first public target; Android support is planned to follow soon.
 
 ## Features
 
