@@ -1,0 +1,19 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024' viewBox='0 0 1024 1024'>
+  <defs>
+    <linearGradient id='bg5' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#0b152b'/><stop offset='1' stop-color='#101c38'/>
+    </linearGradient>
+    <linearGradient id='cal5' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0' stop-color='#203f77'/><stop offset='1' stop-color='#1b315c'/>
+    </linearGradient>
+    <linearGradient id='seven5' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#76e5ff'/><stop offset='1' stop-color='#4a89f5'/>
+    </linearGradient>
+  </defs>
+  <rect width='1024' height='1024' rx='220' fill='url(#bg5)'/>
+  <rect x='136' y='168' width='752' height='700' rx='86' fill='url(#cal5)' stroke='#345c9f' stroke-width='20'/>
+  <rect x='162' y='246' width='700' height='88' rx='28' fill='#2fc1ef'/>
+  <path d='M336 320h398c28 0 46 30 31 54L568 630c-56 73-90 161-98 257-2 31-28 55-59 55h-15c-33 0-59-28-56-62 9-118 52-233 129-338l137-182H336c-32 0-57-25-57-56s25-56 57-56z' fill='url(#seven5)'/>
+  <circle cx='232' cy='144' r='34' fill='#5dd8ff'/>
+  <circle cx='792' cy='144' r='34' fill='#5dd8ff'/>
+</svg>

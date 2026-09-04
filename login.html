@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SevenFlow - Login</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="css/main.css?v=2.8.2">
+    <link rel="stylesheet" href="css/auth.css?v=2.8.2">
+
+    <!-- Critical CSS for instant splash screen -->
+    <style>
+        .auth-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .auth-loading-content {
+            text-align: center;
+        }
+        .auth-loading .auth-logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+        }
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            border: 3px solid rgba(59, 130, 246, 0.2);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Splash Screen -->
+    <div class="auth-loading" id="authLoading">
+        <div class="auth-loading-content">
+            <img src="logo.png" alt="SevenFlow" class="auth-loading-logo">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Login/Register Forms (hidden initially) -->
+    <div class="auth-container" id="authContainer" style="display: none;">
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="logo.png" alt="SevenFlow" class="auth-logo-img">
+                <p class="auth-subtitle" data-i18n="appSubtitle">Dein minimalistischer Wochenplaner</p>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form" id="loginForm">
+                <h2 data-i18n="login">Anmelden</h2>
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginEmail" data-i18n="email">E-Mail</label>
+                        <input type="email" id="loginEmail" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword" data-i18n="password">Passwort</label>
+                        <input type="password" id="loginPassword" required autocomplete="current-password">
+                    </div>
+                    <div class="forgot-password-link">
+                        <a href="#" id="forgotPasswordLink" data-i18n="forgotPassword">Passwort vergessen?</a>
+                    </div>
+                    <div class="error-message" id="loginError"></div>
+                    <button type="submit" class="auth-btn primary" id="loginBtn" data-i18n="login">Anmelden</button>
+                </form>
+
+                <p class="auth-switch">
+                    <span data-i18n="noAccount">Noch kein Konto?</span>
+                    <a href="#" id="showRegister" data-i18n="register">Registrieren</a>
+                </p>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-form" id="registerForm" style="display: none;">
+                <h2 data-i18n="register">Registrieren</h2>
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <label for="registerEmail" data-i18n="email">E-Mail</label>
+                        <input type="email" id="registerEmail" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword" data-i18n="password">Passwort</label>
+                        <input type="password" id="registerPassword" required autocomplete="new-password" minlength="6">
+                        <small data-i18n="passwordMinLength">Mindestens 6 Zeichen</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPasswordConfirm" data-i18n="passwordConfirm">Passwort bestätigen</label>
+                        <input type="password" id="registerPasswordConfirm" required autocomplete="new-password" minlength="6">
+                    </div>
+                    <div class="error-message" id="registerError"></div>
+                    <button type="submit" class="auth-btn primary" id="registerBtn" data-i18n="createAccount">Konto erstellen</button>
+                </form>
+
+                <p class="auth-switch">
+                    <span data-i18n="haveAccount">Bereits ein Konto?</span>
+                    <a href="#" id="showLogin" data-i18n="login">Anmelden</a>
+                </p>
+            </div>
+
+            <!-- Reset Password Form -->
+            <div class="auth-form" id="resetPasswordForm" style="display: none;">
+                <h2 data-i18n="resetPassword">Passwort zurücksetzen</h2>
+                <p class="reset-info" data-i18n="resetPasswordInfo">Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen deines Passworts.</p>
+                <form id="resetPasswordFormElement">
+                    <div class="form-group">
+                        <label for="resetEmail" data-i18n="email">E-Mail</label>
+                        <input type="email" id="resetEmail" required autocomplete="email">
+                    </div>
+                    <div class="error-message" id="resetError"></div>
+                    <div class="success-message" id="resetSuccess"></div>
+                    <button type="submit" class="auth-btn primary" id="resetBtn" data-i18n="sendResetLink">Link senden</button>
+                </form>
+
+                <p class="auth-switch">
+                    <a href="#" id="backToLogin" data-i18n="backToLogin">Zurück zur Anmeldung</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/translations.js?v=2.8.2"></script>
+    <script src="js/firebase-config.js?v=2.8.2"></script>
+    <script src="js/plugins.js?v=2.8.89"></script>
+    <script src="plugins/google-login/plugin.js?v=2.8.89"></script>
+    <script src="js/auth.js?v=2.8.2"></script>
+    <script src="js/auth-ui.js?v=2.8.2"></script>
+</body>
+</html>

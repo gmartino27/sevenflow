@@ -1,0 +1,290 @@
+/* Ramble Modal */
+.ramble-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 11001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ramble-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--modal-overlay);
+    backdrop-filter: blur(4px);
+}
+
+.ramble-container {
+    position: relative;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    animation: slideUp 0.2s ease;
+}
+
+.ramble-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ramble-header h3 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.ramble-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.ramble-close:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.ramble-body {
+    padding: 1rem 1.25rem;
+}
+
+.ramble-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.35rem;
+    display: none;
+}
+
+.ramble-example {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+.ramble-status {
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: none;
+}
+
+.ramble-modal.listening .ramble-status {
+    display: block;
+}
+
+.ramble-mic-icon {
+    margin-bottom: 0.5rem;
+}
+
+.ramble-mic-icon svg {
+    color: var(--text-muted);
+    transition: all 0.3s;
+    width: 32px;
+    height: 32px;
+}
+
+.ramble-modal.listening .ramble-mic-icon svg {
+    color: #ef4444;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.ramble-status-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.ramble-label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.ramble-transcript-container {
+    margin-bottom: 1rem;
+}
+
+.ramble-transcript-textarea {
+    width: 100%;
+    min-height: 70px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.65rem;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.ramble-transcript-textarea:focus {
+    border-color: var(--accent);
+    background: var(--bg-secondary);
+}
+
+.ramble-preview {
+    margin-bottom: 1rem;
+}
+
+.ramble-preview-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.ramble-preview-item {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.ramble-preview-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.ramble-preview-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ramble-preview-text {
+    flex: 1;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.ramble-preview-meta {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    margin-top: 0.2rem;
+}
+
+.ramble-record-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: var(--accent);
+    color: white;
+    transition: all 0.2s;
+}
+
+.ramble-record-btn:hover {
+    background: var(--accent-hover);
+    transform: scale(1.01);
+}
+
+.ramble-record-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.ramble-modal.listening .ramble-record-btn {
+    background: #ef4444;
+}
+
+.ramble-modal.listening .ramble-record-btn:hover {
+    background: #dc2626;
+}
+
+.ramble-create-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: #22c55e;
+    color: white;
+    transition: all 0.2s;
+    margin-top: 0.5rem;
+}
+
+.ramble-create-btn:hover {
+    background: #16a34a;
+    transform: scale(1.01);
+}
+
+.ramble-create-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@media (max-width: 768px) {
+    .ramble-modal {
+        align-items: center;
+        padding: calc(78px + 0.75rem) 0.75rem calc(78px + 0.75rem + env(safe-area-inset-bottom));
+    }
+
+    .ramble-container {
+        width: 100%;
+        max-width: 450px;
+        margin: 0 auto;
+        max-height: calc(100dvh - 1.5rem - 78px - env(safe-area-inset-bottom));
+    }
+
+    .ramble-header {
+        padding: 0.875rem 1rem;
+    }
+
+    .ramble-header h3 {
+        font-size: 1rem;
+    }
+
+    .ramble-body {
+        padding: 0.875rem 1rem;
+    }
+
+    .ramble-example {
+        font-size: 0.75rem;
+        margin-bottom: 0.875rem;
+    }
+
+    .ramble-transcript-textarea {
+        min-height: 60px;
+        font-size: 0.85rem;
+    }
+}

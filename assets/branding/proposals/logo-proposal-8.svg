@@ -1,0 +1,26 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024' viewBox='0 0 1024 1024'>
+  <defs>
+    <linearGradient id='bg8' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#0b162d'/><stop offset='1' stop-color='#14284f'/>
+    </linearGradient>
+    <linearGradient id='panel8' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0' stop-color='#203d72'/><stop offset='1' stop-color='#1a315a'/>
+    </linearGradient>
+    <linearGradient id='seven8' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#74e4ff'/><stop offset='1' stop-color='#4b86f2'/>
+    </linearGradient>
+  </defs>
+  <rect width='1024' height='1024' rx='220' fill='url(#bg8)'/>
+  <rect x='128' y='170' width='768' height='700' rx='88' fill='url(#panel8)' stroke='#325a9a' stroke-width='18'/>
+  <rect x='156' y='244' width='712' height='88' rx='26' fill='#2fc0ee'/>
+  <line x1='512' y1='332' x2='512' y2='840' stroke='#0f1f3d' stroke-width='22'/>
+  <rect x='220' y='114' width='56' height='116' rx='28' fill='#60d8ff'/>
+  <rect x='748' y='114' width='56' height='116' rx='28' fill='#60d8ff'/>
+
+  <g stroke='#8ebceb' stroke-width='10' stroke-linecap='round' opacity='0.92'>
+    <line x1='206' y1='426' x2='374' y2='426'/><line x1='206' y1='514' x2='374' y2='514'/><line x1='206' y1='602' x2='374' y2='602'/>
+    <line x1='650' y1='426' x2='818' y2='426'/><line x1='650' y1='514' x2='818' y2='514'/><line x1='650' y1='602' x2='818' y2='602'/>
+  </g>
+
+  <path d='M334 314h404c27 0 45 30 30 54L571 626c-55 72-89 159-96 254-2 30-28 54-58 54h-16c-32 0-58-28-55-61 9-117 52-231 128-335l136-182H334c-31 0-56-25-56-56s25-56 56-56z' fill='url(#seven8)'/>
+</svg>

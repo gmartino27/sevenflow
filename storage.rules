@@ -1,0 +1,38 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    function isAllowedContentType(contentType) {
+      return contentType.matches('application/pdf') ||
+        contentType.matches('image/png') ||
+        contentType.matches('image/jpeg') ||
+        contentType.matches('image/gif') ||
+        contentType.matches('image/webp') ||
+        contentType.matches('image/heic') ||
+        contentType.matches('image/heif') ||
+        contentType.matches('application/msword') ||
+        contentType.matches('application/vnd.openxmlformats-officedocument.wordprocessingml.document') ||
+        contentType.matches('application/vnd.ms-excel') ||
+        contentType.matches('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') ||
+        contentType.matches('application/vnd.ms-powerpoint') ||
+        contentType.matches('application/vnd.openxmlformats-officedocument.presentationml.presentation') ||
+        contentType.matches('text/plain') ||
+        contentType.matches('text/csv') ||
+        contentType.matches('application/rtf') ||
+        contentType.matches('application/vnd.oasis.opendocument.text') ||
+        contentType.matches('application/vnd.oasis.opendocument.spreadsheet') ||
+        contentType.matches('application/vnd.oasis.opendocument.presentation');
+    }
+
+    match /users/{userId}/attachments/{taskId}/{fileName} {
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId)
+        && request.resource.size <= 5 * 1024 * 1024
+        && isAllowedContentType(request.resource.contentType);
+      allow delete: if isOwner(userId);
+    }
+  }
+}

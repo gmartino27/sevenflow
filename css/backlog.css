@@ -1,0 +1,117 @@
+/* Backlog Section */
+.backlog-section {
+    display: none; /* Hidden by default, JS will show if needed */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+    flex: 0 0 auto;
+    min-height: 0;
+    overflow: visible;
+}
+
+.backlog-section.visible {
+    display: grid;
+}
+
+.notes-section {
+    display: none;
+    flex: 0 0 auto;
+    min-height: 0;
+}
+
+.notes-section.visible {
+    display: block;
+}
+
+.notes-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    min-height: var(--backlog-column-min-height);
+    height: var(--backlog-column-min-height);
+    overflow: hidden;
+}
+
+.notes-pad-input {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    overflow-y: auto;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    padding: 0.75rem 0.85rem;
+}
+
+.notes-pad-input::placeholder {
+    color: var(--text-muted);
+}
+
+.backlog-column {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    min-height: var(--backlog-column-min-height);
+    min-width: 0;
+}
+
+.backlog-header {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-secondary);
+}
+
+.backlog-title-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    outline: none;
+    padding: 0.15rem 0.25rem;
+    border-radius: 3px;
+    transition: all 0.15s;
+}
+
+.backlog-title-input:hover {
+    background: var(--bg-tertiary);
+}
+
+.backlog-title-input:focus {
+    background: var(--bg-tertiary);
+}
+
+.backlog-tasks {
+    flex: 1;
+    padding: 0.35rem 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 60px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .backlog-section {
+        grid-template-columns: 1fr;
+        flex: 0 0 auto; /* Auto height on mobile */
+        max-height: 60vh; /* But limit to 60% viewport */
+    }
+    
+    .week-grid {
+        flex: 0 0 auto;
+    }
+
+    .notes-card {
+        max-height: 60vh;
+        height: var(--backlog-column-min-height);
+    }
+}

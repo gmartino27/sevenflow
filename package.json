@@ -1,0 +1,21 @@
+{
+  "name": "sevenflow",
+  "version": "2.8.2",
+  "description": "Open-source task planning app with Firebase sync and optional Netlify or Node API routes",
+  "type": "commonjs",
+  "scripts": {
+    "build": "node create-firebase-config.js",
+    "start": "node server.js",
+    "start:local": "node scripts/start-local.js",
+    "test:rules": "firebase emulators:exec --only firestore \"node --test test/*.test.js\"",
+    "check:js": "find . -name '*.js' -not -path './node_modules/*' -not -path './.git/*' -print0 | xargs -0 -n1 node --check"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "firebase": "^11.0.0",
+    "firebase-tools": "^13.29.1"
+  }
+}

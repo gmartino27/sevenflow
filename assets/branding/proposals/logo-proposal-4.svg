@@ -1,0 +1,14 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024' viewBox='0 0 1024 1024'>
+  <defs>
+    <linearGradient id='bg4' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#121e39'/><stop offset='1' stop-color='#0a1428'/>
+    </linearGradient>
+    <linearGradient id='mark4' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#69deff'/><stop offset='1' stop-color='#4f86f8'/>
+    </linearGradient>
+  </defs>
+  <rect width='1024' height='1024' rx='220' fill='url(#bg4)'/>
+  <circle cx='512' cy='512' r='356' fill='none' stroke='#2d4c88' stroke-width='22'/>
+  <path d='M322 328h420c28 0 47 30 32 54L571 644c-55 71-88 158-96 252-2 31-28 55-59 55h-16c-33 0-59-28-56-61 9-117 51-231 126-334l141-188H322c-32 0-57-25-57-56s25-56 57-56z' fill='url(#mark4)'/>
+  <path d='M238 574c19 86 84 161 181 199' fill='none' stroke='#62d8ff' stroke-width='18' stroke-linecap='round' opacity='0.9'/>
+</svg>

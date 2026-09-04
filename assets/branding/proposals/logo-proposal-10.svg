@@ -1,0 +1,27 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024' viewBox='0 0 1024 1024'>
+  <defs>
+    <linearGradient id='bg10' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#0c1730'/><stop offset='1' stop-color='#132b52'/>
+    </linearGradient>
+    <linearGradient id='seven10' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#79e7ff'/><stop offset='1' stop-color='#4883ef'/>
+    </linearGradient>
+  </defs>
+  <rect width='1024' height='1024' rx='220' fill='url(#bg10)'/>
+  <rect x='146' y='180' width='732' height='674' rx='82' fill='#1d3766' stroke='#355f9f' stroke-width='18'/>
+  <rect x='174' y='250' width='676' height='84' rx='24' fill='#33c6f2'/>
+  <rect x='236' y='124' width='52' height='108' rx='26' fill='#65dbff'/>
+  <rect x='736' y='124' width='52' height='108' rx='26' fill='#65dbff'/>
+
+  <g fill='none' stroke='#9ac5f3' stroke-width='8' stroke-linecap='round' opacity='0.95'>
+    <rect x='216' y='422' width='28' height='28' rx='5'/><line x1='260' y1='436' x2='418' y2='436'/>
+    <rect x='216' y='508' width='28' height='28' rx='5'/><line x1='260' y1='522' x2='418' y2='522'/>
+    <rect x='216' y='594' width='28' height='28' rx='5'/><line x1='260' y1='608' x2='418' y2='608'/>
+
+    <rect x='636' y='422' width='28' height='28' rx='5'/><line x1='680' y1='436' x2='838' y2='436'/>
+    <rect x='636' y='508' width='28' height='28' rx='5'/><line x1='680' y1='522' x2='838' y2='522'/>
+    <rect x='636' y='594' width='28' height='28' rx='5'/><line x1='680' y1='608' x2='838' y2='608'/>
+  </g>
+
+  <path d='M330 306h412c28 0 47 31 31 55L568 624c-56 73-89 161-97 258-2 31-28 55-59 55h-15c-33 0-59-28-56-62 9-119 53-234 130-339l141-188H330c-32 0-57-25-57-56s25-56 57-56z' fill='url(#seven10)'/>
+</svg>

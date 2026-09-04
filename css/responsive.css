@@ -1,0 +1,427 @@
+/* Responsive Breakpoints */
+
+/* Mobile Bottom Navigation */
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    padding: 0.3rem 0.5rem;
+    z-index: 10000;
+    backdrop-filter: blur(10px);
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.mobile-nav-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.mobile-nav-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.4rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    transition: all 0.15s;
+    flex: 1;
+    max-width: 70px;
+    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+    touch-action: manipulation;
+}
+
+.mobile-nav-btn:active {
+    background: rgba(59, 130, 246, 0.15);
+    transform: scale(0.95);
+}
+
+.mobile-nav-btn svg {
+    width: 22px;
+    height: 22px;
+    pointer-events: none;
+}
+
+.mobile-nav-btn span {
+    font-size: 0.6rem;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+/* View button specific styles */
+#mobileView {
+    flex-direction: column;
+}
+
+#mobileView .view-number {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1;
+    color: currentColor;
+}
+
+#mobileView .view-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+}
+
+.mobile-nav-btn.active {
+    color: var(--accent);
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.mobile-nav-btn.spinning svg {
+    animation: spin 0.5s linear;
+}
+
+/* Hide labels when setting is enabled */
+.mobile-bottom-nav.hide-labels .mobile-nav-btn span {
+    display: none;
+}
+
+.mobile-bottom-nav.hide-labels #mobileView .view-number {
+    display: block;
+    font-size: 1.3rem;
+}
+
+.mobile-bottom-nav.hide-labels .mobile-nav-btn {
+    padding: 0.5rem 0.4rem;
+}
+
+.mobile-bottom-nav.hide-labels .mobile-nav-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Mobile Popup Menus */
+.mobile-popup {
+    display: none;
+    position: fixed;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 16px 16px 0 0;
+    padding: 1rem;
+    z-index: 9999;
+    animation: slideUpMobile 0.2s ease;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+    touch-action: manipulation;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+@keyframes slideUpMobile {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.mobile-popup.active {
+    display: block;
+}
+
+.mobile-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.mobile-popup-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.mobile-popup-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.mobile-popup-close svg {
+    width: 20px;
+    height: 20px;
+}
+
+.mobile-view-options,
+.mobile-menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.mobile-option-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.2);
+    touch-action: manipulation;
+}
+
+.mobile-option-btn svg {
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}
+
+.mobile-option-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.mobile-option-btn:active {
+    transform: scale(0.98);
+}
+
+/* Tablet and smaller desktops */
+@media (max-width: 1200px) {
+    .header-content {
+        gap: 1rem;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .multi-select-bar {
+        bottom: 72px;
+    }
+
+    /* Show bottom nav */
+    .mobile-bottom-nav {
+        display: block;
+    }
+    
+    /* Add padding to avoid bottom nav overlap */
+    .week-container {
+        padding-bottom: 70px;
+    }
+
+    .inbox-create-row {
+        flex-direction: column;
+    }
+
+    .inbox-add-btn {
+        width: 100%;
+    }
+
+    .inbox-item-actions {
+        gap: 0.25rem;
+    }
+
+    .inbox-action-btn {
+        padding: 0.16rem 0.42rem;
+        font-size: 0.68rem;
+        line-height: 1.1;
+    }
+    
+    /* Simplify header for mobile */
+    .app-header {
+        padding: 0.45rem 0.75rem;
+    }
+    
+    .header-content {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.5rem;
+        grid-template-columns: none;
+    }
+    
+    /* Logo left */
+    .header-left {
+        display: flex !important;
+        flex-shrink: 0;
+        align-items: center;
+        min-width: 100px;
+    }
+
+    .header-left .search-container {
+        display: none;
+    }
+
+    .app-logo {
+        height: 30px;
+        width: auto;
+    }
+    
+    /* Week navigation rechts */
+    .header-center {
+        display: flex !important;
+        flex: 1;
+        justify-content: flex-end;
+        padding-right: 0.5rem;
+    }
+    
+    .header-center .view-controls {
+        display: none;
+    }
+    
+    .week-navigation {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Hide Heute button in header (it's in bottom nav) */
+    .week-navigation .today-btn {
+        display: none;
+    }
+
+    /* Focus mode is desktop-only */
+    .week-navigation #focusModeBtn {
+        display: none;
+    }
+
+    .week-info {
+        font-size: 0.75rem;
+        min-width: 110px;
+        text-align: center;
+    }
+    
+    .nav-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    .nav-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    /* Hide right section */
+    .header-right {
+        display: none !important;
+    }
+
+    /* Single column layout */
+    .week-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+        overflow: visible;
+    }
+    
+    .day-column {
+        min-height: auto;
+        overflow: visible;
+    }
+
+    .day-column {
+        min-height: 260px;
+    }
+
+    /* 1-day view: the single column should fill the screen down to the bottom nav
+       instead of sitting at the generic 260px used for the 3/5-day stacked lists.
+       135px = sticky header (~53px, measured) + week-container's own top/bottom
+       padding (12px + 70px, the latter already reserved to clear the fixed nav).
+       !important because .week-container.no-backlog .day-column below forces
+       min-height: 0 !important — the #weekGrid id here still wins on specificity. */
+    #weekGrid .day-column:only-child {
+        min-height: calc(100vh - 135px) !important;
+        min-height: calc(100dvh - 135px) !important;
+    }
+
+    .backlog-column {
+        min-height: 180px;
+    }
+
+    /* Mobile: When backlog is hidden, keep container scrollable but let days expand */
+    .week-container.no-backlog {
+        overflow-y: auto !important;
+        height: auto !important;
+    }
+
+    .week-container.no-backlog .week-grid {
+        overflow: visible !important;
+        height: auto !important;
+        flex: none !important;
+        min-height: 0 !important;
+    }
+
+    .week-container.no-backlog .day-column {
+        overflow: visible !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+    .week-container {
+        padding: 0.75rem;
+        padding-bottom: 70px;
+    }
+    
+    .app-header {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .app-title {
+        font-size: 1.1rem;
+        line-height: 30px;
+        height: 30px;
+    }
+
+    .week-info {
+        font-size: 0.7rem;
+        min-width: 90px;
+    }
+    
+    .nav-btn {
+        width: 30px;
+        height: 30px;
+    }
+
+    .today-btn {
+        padding: 0.25rem 0.6rem;
+        font-size: 0.65rem;
+    }
+    
+    /* Always show delete button */
+    .task-delete {
+        opacity: 0.5 !important;
+    }
+
+    .inbox-item-actions {
+        gap: 0.2rem;
+    }
+
+    .inbox-action-btn {
+        padding: 0.14rem 0.38rem;
+        font-size: 0.62rem;
+    }
+}

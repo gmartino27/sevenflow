@@ -1,0 +1,37 @@
+[build]
+  command = "node create-firebase-config.js"
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[redirects]]
+  from = "/api/task-api/key"
+  to = "/.netlify/functions/task-api-key"
+  status = 200
+
+[[redirects]]
+  from = "/api/tasks/create"
+  to = "/.netlify/functions/task-create"
+  status = 200
+
+[[redirects]]
+  from = "/api/tasks/read-day"
+  to = "/.netlify/functions/task-read-day"
+  status = 200
+
+[[redirects]]
+  from = "/api/tasks/search-title"
+  to = "/.netlify/functions/task-search-title"
+  status = 200

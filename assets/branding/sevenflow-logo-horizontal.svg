@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="420" viewBox="0 0 1900 420" role="img" aria-label="SevenFlow Logo Horizontal">
+  <defs>
+    <linearGradient id="flowBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22B8FF"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1900" height="420" fill="none"/>
+
+  <image href="proposals/logo-proposal-11.svg" x="20" y="30" width="360" height="360"/>
+
+  <text x="430" y="224" dominant-baseline="middle"
+        font-family="Inter, Segoe UI, Arial, sans-serif"
+        font-size="220" font-weight="800" letter-spacing="-4">
+    <tspan fill="#0F172A">Seven</tspan><tspan fill="url(#flowBlue)">Flow</tspan>
+  </text>
+</svg>

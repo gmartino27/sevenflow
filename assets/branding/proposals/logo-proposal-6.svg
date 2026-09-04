@@ -1,0 +1,29 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024' viewBox='0 0 1024 1024'>
+  <defs>
+    <linearGradient id='bg6' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#0a1428'/><stop offset='1' stop-color='#101d39'/>
+    </linearGradient>
+    <linearGradient id='card6' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0' stop-color='#234379'/><stop offset='1' stop-color='#1a315a'/>
+    </linearGradient>
+    <linearGradient id='seven6' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#73e4ff'/><stop offset='1' stop-color='#4d87f3'/>
+    </linearGradient>
+  </defs>
+  <rect width='1024' height='1024' rx='220' fill='url(#bg6)'/>
+  <rect x='136' y='172' width='752' height='694' rx='88' fill='url(#card6)' stroke='#315a9b' stroke-width='18'/>
+  <rect x='164' y='244' width='696' height='90' rx='26' fill='#2fc1ef'/>
+  <rect x='218' y='116' width='58' height='118' rx='29' fill='#5fd8ff'/>
+  <rect x='748' y='116' width='58' height='118' rx='29' fill='#5fd8ff'/>
+
+  <g stroke='#8fbdec' stroke-width='10' stroke-linecap='round' opacity='0.9'>
+    <line x1='208' y1='430' x2='452' y2='430'/>
+    <line x1='208' y1='520' x2='452' y2='520'/>
+    <line x1='208' y1='610' x2='452' y2='610'/>
+    <line x1='574' y1='430' x2='818' y2='430'/>
+    <line x1='574' y1='520' x2='818' y2='520'/>
+    <line x1='574' y1='610' x2='818' y2='610'/>
+  </g>
+
+  <path d='M338 314h400c27 0 45 30 30 54L570 625c-55 72-88 159-95 253-2 31-28 54-58 54h-16c-32 0-58-28-55-61 9-116 51-229 127-332l137-183H338c-31 0-56-25-56-56s25-56 56-56z' fill='url(#seven6)'/>
+</svg>

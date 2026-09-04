@@ -1,0 +1,430 @@
+/* Tasks Container */
+.tasks-container {
+    padding: 0.4rem 0.5rem;
+    flex: 1;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Task Item */
+.task-item {
+    background: transparent;
+    border: none;
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid var(--task-row-border);
+    border-radius: 0;
+    padding: 0.5rem 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-width: 0;
+    transition: all 0.15s;
+    cursor: pointer;
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+
+/* Task colors */
+.task-item.color-blue {
+    border-left-color: #3b82f6;
+    background: transparent;
+}
+.task-item.color-green {
+    border-left-color: #10b981;
+}
+.task-item.color-yellow {
+    border-left-color: #f59e0b;
+}
+.task-item.color-orange {
+    border-left-color: #f97316;
+}
+.task-item.color-red {
+    border-left-color: #ef4444;
+}
+.task-item.color-purple {
+    border-left-color: #a855f7;
+}
+.task-item.color-pink {
+    border-left-color: #ec4899;
+}
+.task-item.color-teal {
+    border-left-color: #14b8a6;
+}
+
+.task-item:hover {
+    background: var(--task-row-hover);
+    border-radius: 5px;
+}
+
+.task-item.selected {
+    background: var(--task-selected-bg);
+    border-left-color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--task-selected-outline);
+    border-radius: 6px;
+}
+
+/* Drag and Drop States */
+.task-item.dragging {
+    opacity: 0.4;
+    transform: scale(0.97);
+    cursor: grabbing;
+}
+
+.task-item[draggable="true"] {
+    cursor: grab;
+}
+
+.tasks-container.drop-active {
+    background: var(--drop-active-bg);
+    border-radius: 6px;
+}
+
+/* Drop position indicator */
+.drop-indicator {
+    height: 2px;
+    background: var(--accent);
+    margin: 1px 0;
+    border-radius: 1px;
+    box-shadow: 0 0 6px var(--drop-indicator-shadow);
+    pointer-events: none;
+}
+
+.task-checkbox {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative;
+    z-index: 1;
+    background: transparent;
+}
+
+.task-checkbox:hover {
+    border-color: var(--accent);
+    border-width: 2.5px;
+}
+
+.task-checkbox.checked {
+    background: var(--success);
+    border-color: var(--success);
+    border-width: 2px;
+}
+
+.task-checkbox svg {
+    width: 10px;
+    height: 10px;
+    stroke: white;
+    stroke-width: 3.5;
+}
+
+.task-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.task-text {
+    display: block;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+.task-input {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-family: inherit;
+    outline: none;
+    width: 100%;
+    line-height: 1.35;
+}
+
+.task-input::placeholder {
+    color: var(--text-muted);
+}
+
+.task-delete {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.15rem;
+    border-radius: 3px;
+    transition: all 0.15s;
+    opacity: 0;
+    flex-shrink: 0;
+}
+
+.task-item:hover .task-delete {
+    opacity: 0.7;
+}
+
+.task-delete:hover {
+    background: var(--danger-soft-bg);
+    color: #ef4444;
+    opacity: 1 !important;
+}
+
+.task-delete svg {
+    width: 13px;
+    height: 13px;
+    stroke-width: 2.5;
+}
+
+/* Task Placeholder */
+.task-placeholder {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--task-row-border);
+    border-radius: 0;
+    padding: 0.3rem 0.45rem;
+    min-height: 28px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+}
+
+.task-placeholder::before {
+    content: '+';
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.15s;
+    margin-right: 0.35rem;
+}
+
+.task-placeholder:hover::before {
+    opacity: 1;
+}
+
+.task-placeholder:hover {
+    background: var(--task-row-hover-soft);
+    border-radius: 5px;
+    border-bottom-color: var(--accent);
+}
+
+/* Scrollbar */
+.tasks-container::-webkit-scrollbar {
+    width: 3px;
+}
+
+.tasks-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tasks-container::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 2px;
+}
+
+/* Task Reminder Icon */
+.task-reminder-icon {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.35rem;
+    color: var(--accent);
+    opacity: 0.85;
+}
+
+.task-reminder-icon svg {
+    width: 11px;
+    height: 11px;
+    stroke-width: 2.5;
+}
+
+.task-source-icon {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.35rem;
+    color: var(--accent);
+    opacity: 0.85;
+}
+
+.task-source-icon svg {
+    width: 11px;
+    height: 11px;
+    stroke-width: 2.5;
+}
+
+.task-attachment-icon {
+    color: var(--accent);
+    opacity: 0.9;
+}
+
+.task-deadline {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.35rem;
+    color: var(--accent);
+    opacity: 0.9;
+    font-size: 0.68rem;
+    font-weight: 600;
+}
+
+.task-deadline svg {
+    width: 11px;
+    height: 11px;
+    stroke-width: 2.2;
+    margin-right: 0.2rem;
+}
+
+/* When event time is present, align icons at same height */
+.task-text:has(.task-event-time) .task-reminder-icon {
+    vertical-align: super;
+}
+
+.task-text:has(.task-event-time) .task-source-icon {
+    vertical-align: super;
+}
+
+.task-text:has(.task-event-time) .task-attachment-icon {
+    vertical-align: super;
+}
+
+.task-text:has(.task-event-time) .task-deadline {
+    vertical-align: super;
+}
+
+.task-event-time {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.35rem;
+    color: var(--accent);
+    opacity: 0.9;
+    font-size: 0.7rem;
+    vertical-align: super;
+    font-weight: 600;
+}
+
+.task-progress {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    margin-left: 0.35rem;
+    font-weight: 500;
+}
+
+/* Task Tags */
+.task-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    margin-top: 0.15rem;
+}
+
+.task-tag {
+    display: inline-block;
+    padding: 0.1rem 0.35rem;
+    border-radius: 8px;
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: white;
+}
+
+.task-tag-more {
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+}
+
+/* Task Divider (---) */
+.task-item.divider {
+    padding: 0.3rem 0.6rem;
+    background: transparent;
+    border-left: none;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.task-item.divider:last-child {
+    border-bottom: none;
+}
+
+.task-item.divider:hover {
+    background: rgba(255,255,255,0.04);
+    border-radius: 5px;
+}
+
+.task-item.divider .task-content {
+    flex: 1;
+    border-top: 1.5px solid var(--accent);
+    opacity: 0.6;
+    height: 0;
+}
+
+/* Inbox group title (#Title) */
+.task-item.inbox-group-title {
+    padding: 0.38rem 0.6rem;
+    background: transparent;
+    border-left: none;
+    border-bottom: 1px solid transparent;
+    border-radius: 6px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.task-item.inbox-group-title:hover {
+    background: transparent;
+    border-bottom-color: transparent;
+    box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.task-item.inbox-group-title .task-content {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.task-item.inbox-group-title .task-text {
+    text-align: left;
+    margin-right: auto;
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.01em;
+    color: var(--text-primary);
+    opacity: 0.96;
+}
+
+/* Mobile: Delete button always visible for ALL tasks */
+@media (max-width: 768px) {
+    .task-delete {
+        opacity: 0.5 !important;
+    }
+}

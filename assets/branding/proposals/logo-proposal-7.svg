@@ -1,0 +1,22 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024' viewBox='0 0 1024 1024'>
+  <defs>
+    <linearGradient id='bg7' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#0a1222'/><stop offset='1' stop-color='#132447'/>
+    </linearGradient>
+    <linearGradient id='seven7' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#79e7ff'/><stop offset='1' stop-color='#4a85f0'/>
+    </linearGradient>
+  </defs>
+  <rect width='1024' height='1024' rx='220' fill='url(#bg7)'/>
+  <rect x='150' y='170' width='724' height='704' rx='92' fill='#1b3563' stroke='#335b9e' stroke-width='18'/>
+  <rect x='182' y='246' width='660' height='82' rx='24' fill='#35c6f1'/>
+  <rect x='238' y='118' width='52' height='108' rx='26' fill='#66dcff'/>
+  <rect x='734' y='118' width='52' height='108' rx='26' fill='#66dcff'/>
+
+  <g fill='none' stroke='#95c1ef' stroke-width='10' stroke-linecap='round' opacity='0.95'>
+    <path d='M224 430h202'/><path d='M224 520h202'/><path d='M224 610h202'/>
+    <path d='M598 430h202'/><path d='M598 520h202'/><path d='M598 610h202'/>
+  </g>
+
+  <path d='M326 306h414c28 0 47 31 31 55L566 623c-56 73-90 162-98 259-2 31-28 55-59 55h-15c-33 0-59-28-56-62 9-119 53-235 131-340l141-189H326c-32 0-57-25-57-56s25-56 57-56z' fill='url(#seven7)'/>
+</svg>

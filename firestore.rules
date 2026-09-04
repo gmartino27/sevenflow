@@ -1,0 +1,56 @@
+rules_version = '2';
+
+// SevenFlow - Firestore security rules.
+//
+// The web app talks to Firestore directly from the browser, so these rules are
+// the ONLY access control for client reads/writes. The Netlify functions use the
+// Firebase Admin SDK, which bypasses these rules entirely — server writes are
+// unaffected by anything here.
+//
+// Data model (all under the owning user):
+//   users/{uid}/tasks/{YYYY-MM-DD}     one document per day
+//   users/{uid}/backlogs/{data|titles} backlog columns + inbox, and column titles
+//   users/{uid}/settings/preferences   user settings incl. server-managed apiAccess
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // apiAccess is written exclusively by the server (Admin SDK).
+    // The client must never create, change, or remove these fields — otherwise a
+    // user could flip API access. Covers create (resource
+    // == null), update, and field removal (affectedKeys includes removed keys).
+    function touchesProtectedSettings() {
+      return resource == null
+        ? request.resource.data.keys().hasAny(['apiAccess'])
+        : request.resource.data.diff(resource.data).affectedKeys().hasAny(['apiAccess']);
+    }
+
+    match /users/{userId} {
+
+      // Tasks: one doc per day. Owner has full access; collection queries are
+      // allowed because isOwner() does not depend on document data.
+      match /tasks/{taskDate} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Backlogs + inbox (backlogs/data) and column titles (backlogs/titles).
+      match /backlogs/{backlogDoc} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Settings: owner may read freely and write everything EXCEPT the
+      // server-managed apiAccess field.
+      match /settings/{settingsDoc} {
+        allow read: if isOwner(userId);
+        allow write: if isOwner(userId) && !touchesProtectedSettings();
+      }
+
+      // Everything else under users/{uid} (incl. the user doc itself) is denied
+      // by default — no catch-all allow.
+    }
+  }
+}

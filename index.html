@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Dein minimalistischer Wochenplaner">
+    <title>SevenFlow - Your Week Planner</title>
+    <script>
+        (function () {
+            try {
+                const raw = localStorage.getItem('sevenflow_settings');
+                if (!raw) return;
+                const parsed = JSON.parse(raw);
+                if (parsed && parsed.theme === 'light') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    const themeColor = document.querySelector('meta[name="theme-color"]');
+                    if (themeColor) themeColor.setAttribute('content', '#f5f8ff');
+                }
+            } catch (_) {}
+        })();
+    </script>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="css/main.css?v=2.8.34">
+    <link rel="stylesheet" href="css/tasks.css?v=2.8.64">
+    <link rel="stylesheet" href="css/modals.css?v=2.8.45">
+    <link rel="stylesheet" href="css/backlog.css?v=2.8.51">
+    <link rel="stylesheet" href="css/datepicker.css?v=2.8.54">
+    <link rel="stylesheet" href="css/search.css?v=2.8.3">
+    <link rel="stylesheet" href="css/responsive.css?v=2.8.33">
+
+    <!-- Critical CSS for instant splash screen -->
+    <style>
+        .app-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+        .app-loading-content {
+            text-align: center;
+        }
+        .app-loading-logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+        }
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            border: 3px solid rgba(59, 130, 246, 0.2);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spinLoader 0.8s linear infinite;
+        }
+        @keyframes spinLoader {
+            to { transform: rotate(360deg); }
+        }
+        html[data-theme="light"] .app-loading {
+            background: #f5f8ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Splash Screen -->
+    <div class="app-loading" id="appLoading">
+        <div class="app-loading-content">
+            <img src="logo.png" alt="SevenFlow" class="app-loading-logo">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Main App (hidden initially with visibility to preserve layout) -->
+    <div id="app" style="visibility: hidden;">
+        <header class="app-header">
+            <div class="header-content">
+                <!-- Left: Logo + Search -->
+                <div class="header-left">
+                    <svg class="app-logo" id="appLogoHome" width="175" height="32" viewBox="0 0 1200 220" xmlns="http://www.w3.org/2000/svg">
+                        <text x="0" y="150" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="140" font-weight="800" letter-spacing="-2">
+                            <tspan class="logo-text-primary">Seven</tspan><tspan class="logo-text-accent">Flow</tspan>
+                        </text>
+                    </svg>
+                    <div class="search-container">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Suchen... (Ctrl+K)" data-i18n-placeholder="searchPlaceholder">
+                        <div class="search-dropdown" id="searchDropdown"></div>
+                    </div>
+                </div>
+
+                <!-- Center: Week Navigation -->
+                <div class="header-center">
+                    <div class="week-navigation">
+                        <button class="nav-btn" id="prevWeek" aria-label="Vorherige Woche" data-i18n-title="previousWeek">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <div class="week-info">
+                            <span class="week-range"></span>
+                        </div>
+                        <button class="nav-btn" id="nextWeek" aria-label="Nächste Woche" data-i18n-title="nextWeek">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                        <button class="today-btn" id="todayBtn" data-i18n="today" data-i18n-title="today">Heute</button>
+                        <button class="today-btn today-btn-outline" id="focusModeBtn" data-i18n="focus" data-i18n-title="focusMode">Fokus</button>
+                    </div>
+                    <div class="view-controls">
+                        <button class="view-btn" id="view3" data-days="3" data-i18n-title="view3days">
+                            <span>3</span>
+                        </button>
+                        <button class="view-btn" id="view5" data-days="5" data-i18n-title="view5days">
+                            <span>5</span>
+                        </button>
+                        <button class="view-btn active" id="view7" data-days="7" data-i18n-title="view7days">
+                            <span>7</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Actions -->
+                <div class="header-right">
+                    <button class="icon-btn" id="refreshBtn" aria-label="Aktualisieren" data-i18n-title="refresh">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" id="inboxToggleBtn" title="Inbox" data-i18n-title="inbox">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 4H9l-3-4H2"></path>
+                            <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" id="rambleBtn" title="Ramble" data-i18n-title="ramble">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" id="pausedTasksBtn" title="Pausierte Aufgaben" data-i18n-title="pausedTasks">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" id="settingsBtn" title="Einstellungen" data-i18n-title="settings">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                    <button class="icon-btn logout-btn" id="logoutBtn" title="Abmelden" data-i18n-title="logout">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="week-container">
+            <div class="week-grid" id="weekGrid">
+                <!-- Days will be generated by JavaScript -->
+            </div>
+            
+            <!-- Backlog Section -->
+            <div class="backlog-section">
+                <div class="backlog-column" data-backlog="1">
+                    <div class="backlog-header">
+                        <input type="text" class="backlog-title-input" id="backlogTitle1" value="This week" placeholder="Title...">
+                    </div>
+                    <div class="backlog-tasks" id="backlog1"></div>
+                </div>
+                <div class="backlog-column" data-backlog="2">
+                    <div class="backlog-header">
+                        <input type="text" class="backlog-title-input" id="backlogTitle2" value="Next week" placeholder="Title...">
+                    </div>
+                    <div class="backlog-tasks" id="backlog2"></div>
+                </div>
+                <div class="backlog-column" data-backlog="3">
+                    <div class="backlog-header">
+                        <input type="text" class="backlog-title-input" id="backlogTitle3" value="Later" placeholder="Title...">
+                    </div>
+                    <div class="backlog-tasks" id="backlog3"></div>
+                </div>
+            </div>
+
+            <div class="notes-section" id="notesSection">
+                <div class="notes-card">
+                    <textarea id="notesPadInput" class="notes-pad-input" data-i18n-placeholder="notesPlaceholder" placeholder="Notizen..."></textarea>
+                </div>
+            </div>
+
+            <div class="inbox-view" id="inboxView" style="display: none;">
+                <div class="inbox-header">
+                    <div class="inbox-title-row">
+                        <h2 class="inbox-title" data-i18n="inbox">Inbox</h2>
+                        <span class="inbox-count" id="inboxCount">0</span>
+                    </div>
+                    <div class="inbox-create-row">
+                        <input type="text" id="inboxQuickInput" class="inbox-quick-input" placeholder="Neue Aufgabe... (#Titel für Gruppe)" data-i18n-placeholder="inboxQuickPlaceholder">
+                        <button type="button" id="inboxAddBtn" class="inbox-add-btn" data-i18n="add">Hinzufügen</button>
+                    </div>
+                </div>
+                <div class="inbox-list" id="inboxList"></div>
+            </div>
+        </main>
+
+
+        <!-- Task Details Modal -->
+        <div class="task-modal" id="taskModal" style="display: none;">
+            <div class="modal-overlay" id="modalOverlay"></div>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <div class="modal-title-group">
+                        <input type="text" class="modal-title-input" id="modalTitle" placeholder="Aufgabe..." required data-i18n-title="taskTitle">
+                        <span class="required-indicator">*</span>
+                    </div>
+                    <div class="modal-header-actions">
+                        <div class="modal-menu-wrapper">
+                        <button class="modal-menu-toggle" id="modalMenuToggle" type="button" aria-label="Mehr Optionen" data-i18n-title="menu">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <circle cx="12" cy="5" r="1.6"></circle>
+                                <circle cx="12" cy="12" r="1.6"></circle>
+                                <circle cx="12" cy="19" r="1.6"></circle>
+                            </svg>
+                        </button>
+                        <div class="modal-menu-dropdown" id="modalMenuDropdown">
+                            <button class="modal-menu-item" id="modalMenuAddDeadline" type="button" data-i18n-title="menuAddDeadline">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span data-i18n="menuAddDeadline">Deadline hinzufügen</span>
+                            </button>
+                            <button class="modal-menu-item" id="modalMenuAddTags" type="button" data-i18n-title="menuAddTags">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20.59 13.41 11 3H4v7l9.59 9.59a2 2 0 0 0 2.82 0l4.18-4.18a2 2 0 0 0 0-2.82z"></path>
+                                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                </svg>
+                                <span data-i18n="menuAddTags">Tags hinzufügen</span>
+                            </button>
+                            <button class="modal-menu-item" id="modalMenuAttachFiles" type="button" data-i18n-title="menuAttachFiles">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21.44 11.05l-8.49 8.49a6 6 0 0 1-8.49-8.49l8.49-8.48a4 4 0 1 1 5.66 5.66l-8.48 8.49a2 2 0 0 1-2.83-2.83l7.78-7.78"></path>
+                                </svg>
+                                <span data-i18n="menuAttachFiles">Dateien anhängen</span>
+                            </button>
+                            <button class="modal-menu-item" id="modalMenuDuplicate" type="button" data-i18n-title="menuDuplicate">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span data-i18n="menuDuplicate">Duplizieren</span>
+                            </button>
+                            <button class="modal-menu-item" id="modalMenuMoveToday" type="button" data-i18n-title="menuMoveToday">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    <polyline points="9 14 7 16 9 18"></polyline>
+                                    <line x1="7" y1="16" x2="14" y2="16"></line>
+                                </svg>
+                                <span data-i18n="menuMoveToday">Auf heute verschieben</span>
+                            </button>
+                            <button class="modal-menu-item" id="modalMenuMoveTomorrow" type="button" data-i18n-title="menuMoveTomorrow">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    <polyline points="15 14 17 16 15 18"></polyline>
+                                    <line x1="10" y1="16" x2="17" y2="16"></line>
+                                </svg>
+                                <span data-i18n="menuMoveTomorrow">Auf morgen verschieben</span>
+                            </button>
+                            <button class="modal-menu-item" id="modalMenuMoveInbox" type="button" data-i18n-title="menuMoveInbox">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 12h-4l-3 4H9l-3-4H2"></path>
+                                    <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                                </svg>
+                                <span data-i18n="menuMoveInbox">In Inbox verschieben</span>
+                            </button>
+                            <button class="modal-menu-item" id="modalMenuDetachTask" type="button" data-i18n-title="menuDetachTask">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>
+                                <span data-i18n="menuDetachTask">Aufgabe loslösen</span>
+                            </button>
+                            <button class="modal-menu-item" id="modalMenuPauseRecurring" type="button" data-i18n-title="menuPauseRecurring">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="6" y="4" width="4" height="16"></rect>
+                                    <rect x="14" y="4" width="4" height="16"></rect>
+                                </svg>
+                                <span data-i18n="menuPauseRecurring">Aufgabe pausieren</span>
+                            </button>
+                            <button class="modal-menu-item danger" id="modalMenuDelete" type="button" data-i18n-title="delete">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                                <span data-i18n="delete">Löschen</span>
+                            </button>
+                        </div>
+                        </div>
+                        <button class="modal-close" id="modalClose" data-i18n-title="close">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-date-color-row">
+                        <div class="modal-time-wrapper">
+                            <input type="time" class="modal-time-input" id="modalEventTime">
+                            <svg class="time-picker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-i18n-title="eventTime">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+
+                        <div class="modal-date-wrapper">
+                            <input type="text" class="modal-date-input" id="modalDate" placeholder="TT.MM.JJJJ" readonly required>
+                            <svg class="date-picker-icon" id="datePickerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-i18n-title="selectDate">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        
+                        <div class="color-selector-wrapper">
+                            <div class="color-current" id="colorCurrent" data-color="none" data-i18n-title="color"></div>
+                            <div class="color-dropdown" id="colorDropdown">
+                                <div class="color-option" data-color="none" title="keine"></div>
+                                <div class="color-option color-blue" data-color="blue" title="blau"></div>
+                                <div class="color-option color-green" data-color="green" title="grün"></div>
+                                <div class="color-option color-yellow" data-color="yellow" title="gelb"></div>
+                                <div class="color-option color-orange" data-color="orange" title="orange"></div>
+                                <div class="color-option color-red" data-color="red" title="rot"></div>
+                                <div class="color-option color-purple" data-color="purple" title="lila"></div>
+                                <div class="color-option color-pink" data-color="pink" title="pink"></div>
+                                <div class="color-option color-teal" data-color="teal" title="türkis"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <textarea class="modal-description" id="modalDescription" placeholder="Beschreibung hinzufügen..." data-i18n-placeholder="descriptionPlaceholder"></textarea>
+                    
+                    <div class="subtasks-section">
+                        <label class="subtasks-label" data-i18n="subtasks">Subtasks</label>
+                        <div class="subtasks-container" id="subtasksContainer">
+                            <!-- Subtasks will be rendered here -->
+                        </div>
+                        <button type="button" class="add-subtask-btn" id="addSubtaskBtn" data-i18n="addSubtask" data-i18n-title="addSubtask">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Subtask hinzufügen
+                        </button>
+                    </div>
+                    
+                    <div class="tags-section is-hidden" id="modalTagsSection">
+                        <label class="tags-label" data-i18n="tags">Tags</label>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.4rem;">
+                            <input type="text" class="tag-input" id="tagInput" placeholder="Tag hinzufügen..." data-i18n-placeholder="tagPlaceholder" style="flex: 1;">
+                            <button type="button" class="tag-add-btn" id="tagAddBtn" data-i18n="add" data-i18n-title="add" style="padding: 0.5rem 0.8rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; white-space: nowrap;">
+                                + Add
+                            </button>
+                        </div>
+                        <div class="tags-container" id="tagsContainer">
+                            <!-- Tags will be rendered here -->
+                        </div>
+                    </div>
+                    
+                    <div class="modal-recurring">
+                        <label for="modalRecurring" data-i18n="recurring">Wiederkehrend:</label>
+                        <select class="modal-recurring-select" id="modalRecurring">
+                            <option value="none" data-i18n-option="recurringNone">Keine Wiederholung</option>
+                            <option value="daily" data-i18n-option="daily">Täglich</option>
+                            <option value="weekly" data-i18n-option="weekly">Wöchentlich</option>
+                            <option value="biweekly" data-i18n-option="biweekly">Zweiwöchentlich</option>
+                            <option value="monthly" data-i18n-option="monthly">Monatlich</option>
+                            <option value="yearly" data-i18n-option="yearly">Jährlich</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-deadline modal-deadline-separated is-hidden" id="modalDeadlineSection">
+                        <label for="modalDeadlineDate" data-i18n="deadlineDate">Deadline</label>
+                        <input type="date" id="modalDeadlineDate" class="modal-deadline-input">
+                    </div>
+
+                    <div class="modal-attachments-section is-hidden" id="modalAttachmentsSection">
+                        <label class="attachments-label" data-i18n="menuAttachFiles">Dateien anhängen</label>
+                        <div class="attachments-actions">
+                            <input type="file" id="modalAttachmentInput" class="attachment-file-input" multiple accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.heic,.heif,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.rtf,.odt,.ods,.odp">
+                            <button type="button" class="attachment-add-btn" id="modalAttachmentAddBtn" data-i18n="menuAttachFiles" data-i18n-title="menuAttachFiles">Dateien anhängen</button>
+                        </div>
+                        <div class="attachments-status" id="modalAttachmentsStatus"></div>
+                        <div class="attachments-list" id="modalAttachmentsList"></div>
+                    </div>
+
+                    <div class="modal-reminder">
+                        <div class="reminder-toggle">
+                            <label>
+                                <input type="checkbox" id="modalReminderEnabled" class="reminder-checkbox">
+                                <span data-i18n="enableReminder">Erinnerung aktivieren</span>
+                            </label>
+                        </div>
+                        <div class="reminder-time" id="reminderTimeContainer" style="display: none;">
+                            <label for="modalReminderTime" data-i18n="reminderTime">Erinnerungszeit:</label>
+                            <input type="time" id="modalReminderTime" class="reminder-time-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-save-btn" id="modalSave" data-i18n="save" data-i18n-title="save">Speichern</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="confirm-modal" id="confirmModal" style="display: none;">
+            <div class="modal-overlay" id="confirmOverlay"></div>
+            <div class="confirm-container">
+                <div class="confirm-header">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <h3 id="confirmTitle">Aufgabe löschen?</h3>
+                </div>
+                <div class="confirm-body">
+                    <p id="confirmMessage">Möchtest du diese Aufgabe wirklich löschen?</p>
+                </div>
+                <div class="confirm-footer">
+                    <button class="confirm-cancel-btn" id="confirmCancel" data-i18n="cancel">Abbrechen</button>
+                    <button class="confirm-action-btn" id="confirmSingle" style="display: none;" data-i18n="deleteThis">Nur diese</button>
+                    <button class="confirm-delete-btn" id="confirmDelete" data-i18n="delete">Löschen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="settings-modal" id="settingsModal" style="display: none;">
+            <div class="modal-overlay" id="settingsOverlay"></div>
+            <div class="modal-container settings-container">
+                <div class="modal-header">
+                    <h2 class="settings-title" data-i18n="settings">Einstellungen</h2>
+                    <button class="modal-close" id="settingsClose" data-i18n-title="close">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body settings-body">
+                    <div class="setting-item">
+                        <label for="viewMode" data-i18n="view">Ansicht</label>
+                        <select class="setting-select" id="viewMode">
+                            <option value="week" data-i18n-option="viewModeWeek">Wochentage (Mo-So)</option>
+                            <option value="rolling" data-i18n-option="viewModeRolling">Ab heute</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="showBacklog" data-i18n="underWeekSection">Bereich unter Tagen</label>
+                        <select class="setting-select" id="showBacklog">
+                            <option value="none" data-i18n-option="underWeekNone">Nichts</option>
+                            <option value="backlog" data-i18n-option="underWeekBacklog">Backlog</option>
+                            <option value="notes" data-i18n-option="underWeekNotes">Notizblock</option>
+                        </select>
+                    </div>
+                    <!-- Mobile-only setting -->
+                    <div class="setting-item mobile-only-setting" id="mobileNavLabelsSetting" style="display: none;">
+                        <label for="mobileNavLabels" data-i18n="mobileNavLabels">Menü-Beschriftungen anzeigen</label>
+                        <select class="setting-select" id="mobileNavLabels">
+                            <option value="show" data-i18n-option="show">Anzeigen</option>
+                            <option value="hide" data-i18n-option="hide">Ausblenden</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="languageSelect" data-i18n="language">Sprache</label>
+                        <select class="setting-select" id="languageSelect">
+                            <option value="en">English</option>
+                            <option value="de">Deutsch</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="keyboardShortcut" data-i18n="keyboardShortcuts">Tastenkürzel für neue Aufgabe</label>
+                        <select class="setting-select" id="keyboardShortcut">
+                            <option value="ctrl+shift+q">Ctrl+Shift+Q</option>
+                            <option value="alt+q">Alt+Q</option>
+                            <option value="ctrl+q">Ctrl+Q</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="themeSelect" data-i18n="theme">Theme</label>
+                        <select class="setting-select" id="themeSelect">
+                            <option value="dark" data-i18n-option="themeDark">Dunkel</option>
+                            <option value="light" data-i18n-option="themeLight">Hell</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="autoMoveIncompleteTasks" data-i18n="autoMoveIncompleteTasks">Unerledigte Aufgaben verschieben</label>
+                        <select class="setting-select" id="autoMoveIncompleteTasks">
+                            <option value="enabled" data-i18n-option="enabled">Aktiviert</option>
+                            <option value="disabled" data-i18n-option="disabled">Deaktiviert</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="hideCompletedTasks" data-i18n="hideCompletedTasks">Erledigte Aufgaben ausblenden</label>
+                        <select class="setting-select" id="hideCompletedTasks">
+                            <option value="enabled" data-i18n-option="enabled">Aktiviert</option>
+                            <option value="disabled" data-i18n-option="disabled">Deaktiviert</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="timeFormatSelect" data-i18n="timeFormat">Zeitformat</label>
+                        <select class="setting-select" id="timeFormatSelect">
+                            <option value="24h" data-i18n-option="timeFormat24h">24-Stunden (14:00)</option>
+                            <option value="12h" data-i18n-option="timeFormat12h">12-Stunden (2:00 PM)</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label data-i18n="backup">Backup</label>
+                        <div class="setting-inline-row">
+                            <button type="button" class="setting-action-btn" id="backupExportBtn" data-i18n="backupExport">Backup exportieren</button>
+                            <button type="button" class="setting-action-btn secondary" id="backupImportBtn" data-i18n="backupImport">Backup importieren</button>
+                        </div>
+                        <div class="setting-help-text" id="backupStatus" data-i18n="backupInfo">JSON-Backup ohne Dateien. Anhänge bleiben als Referenz erhalten.</div>
+                        <input type="file" id="backupImportFile" accept="application/json,.json" style="display: none;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-save-btn" id="settingsSave" data-i18n="save" data-i18n-title="save">Speichern</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Date Picker -->
+        <div class="custom-datepicker" id="customDatePicker">
+            <div class="datepicker-header">
+                <button class="datepicker-nav-btn" id="prevMonth" data-i18n-title="previousWeek">←</button>
+                <div class="datepicker-month" id="pickerMonth"></div>
+                <button class="datepicker-nav-btn" id="nextMonth" data-i18n-title="nextWeek">→</button>
+            </div>
+            <div class="datepicker-weekdays">
+                <div class="datepicker-weekday">Mo</div>
+                <div class="datepicker-weekday">Di</div>
+                <div class="datepicker-weekday">Mi</div>
+                <div class="datepicker-weekday">Do</div>
+                <div class="datepicker-weekday">Fr</div>
+                <div class="datepicker-weekday">Sa</div>
+                <div class="datepicker-weekday">So</div>
+            </div>
+            <div class="datepicker-days" id="pickerDays"></div>
+            <div class="datepicker-footer">
+                <button class="datepicker-btn datepicker-btn-clear" id="pickerClear" data-i18n="clear">Löschen</button>
+                <button class="datepicker-btn datepicker-btn-today" id="pickerToday" data-i18n="today">Heute</button>
+            </div>
+        </div>
+
+        <!-- Header Navigation Date Picker -->
+        <div class="custom-datepicker" id="weekNavDatePicker">
+            <div class="datepicker-header">
+                <button class="datepicker-nav-btn" id="weekNavPrevMonth" data-i18n-title="previousWeek">←</button>
+                <div class="datepicker-month" id="weekNavPickerMonth"></div>
+                <button class="datepicker-nav-btn" id="weekNavNextMonth" data-i18n-title="nextWeek">→</button>
+            </div>
+            <div class="datepicker-weekdays">
+                <div class="datepicker-weekday">Mo</div>
+                <div class="datepicker-weekday">Di</div>
+                <div class="datepicker-weekday">Mi</div>
+                <div class="datepicker-weekday">Do</div>
+                <div class="datepicker-weekday">Fr</div>
+                <div class="datepicker-weekday">Sa</div>
+                <div class="datepicker-weekday">So</div>
+            </div>
+            <div class="datepicker-days" id="weekNavPickerDays"></div>
+            <div class="datepicker-footer">
+                <button class="datepicker-btn datepicker-btn-clear" id="weekNavPickerClear" data-i18n="clear">Löschen</button>
+                <button class="datepicker-btn datepicker-btn-today" id="weekNavPickerToday" data-i18n="today">Heute</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ramble Modal -->
+    <div class="ramble-modal" id="rambleModal" style="display: none;">
+        <div class="ramble-overlay" id="rambleOverlay"></div>
+        <div class="ramble-container">
+            <div class="ramble-header">
+                <h3 data-i18n="rambleTitle">Aufgaben per Sprache</h3>
+                    <button class="ramble-close" id="rambleClose" data-i18n-title="close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="ramble-body">
+                <p class="ramble-desc" data-i18n="rambleDesc">Sprich deine Aufgaben ein oder füge Text ein</p>
+                <p class="ramble-example" data-i18n="rambleExample">Beispiel: 'Heute Fussball um 14 Uhr, morgen Training um 11 Uhr'</p>
+
+                <div class="ramble-status" id="rambleStatus">
+                    <div class="ramble-mic-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                    </div>
+                    <p class="ramble-status-text" id="rambleStatusText"></p>
+                </div>
+
+                <div class="ramble-transcript-container" id="rambleTranscriptContainer">
+                    <label class="ramble-label" data-i18n="rambleTranscriptLabel">Text:</label>
+                    <textarea class="ramble-transcript-textarea" id="rambleTranscriptTextarea" rows="3" placeholder="Aufgaben hier eingeben oder per Sprache aufnehmen..."></textarea>
+                </div>
+
+                <div class="ramble-preview" id="ramblePreview" style="display: none;">
+                    <label class="ramble-label" data-i18n="ramblePreviewLabel">Erkannte Aufgaben:</label>
+                    <div class="ramble-preview-list" id="ramblePreviewList"></div>
+                </div>
+
+                <button class="ramble-record-btn" id="rambleRecordBtn" data-i18n="rambleStart" data-i18n-title="rambleStart">Aufnahme starten</button>
+                <button class="ramble-create-btn" id="rambleCreateBtn" data-i18n="rambleCreate" data-i18n-title="rambleCreate" style="display: none;">Aufgaben erstellen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <div class="mobile-nav-items">
+
+            <button class="mobile-nav-btn" id="mobileToday" data-i18n-title="today">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <rect x="3" y="5" width="18" height="16" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <text x="12" y="16" text-anchor="middle" font-size="9" font-weight="bold" fill="currentColor" stroke="none" stroke-width="0">2</text>
+                </svg>
+                <span data-i18n="today">Heute</span>
+            </button>
+
+            <button class="mobile-nav-btn" id="mobileInbox" data-i18n-title="inbox">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 12h-4l-3 4H9l-3-4H2"></path>
+                    <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                </svg>
+                <span data-i18n="inbox">Inbox</span>
+            </button>
+
+            <button class="mobile-nav-btn" id="mobileView" data-i18n-title="view">
+                <span class="view-number" id="mobileViewNumber">7</span>
+                <span class="view-label" id="mobileViewLabel">Tage</span>
+            </button>
+            
+            <button class="mobile-nav-btn" id="mobileSearch" data-i18n-title="search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <span data-i18n="search">Suche</span>
+            </button>
+            
+            <button class="mobile-nav-btn" id="mobileMenu" data-i18n-title="menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <circle cx="12" cy="5" r="1.5"></circle>
+                    <circle cx="12" cy="12" r="1.5"></circle>
+                    <circle cx="12" cy="19" r="1.5"></circle>
+                </svg>
+                <span data-i18n="menu">Menü</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile View Popup -->
+    <div class="mobile-popup" id="mobileViewPopup">
+        <div class="mobile-popup-header">
+            <span class="mobile-popup-title" data-i18n="view">Ansicht</span>
+            <button class="mobile-popup-close" id="closeViewPopup" data-i18n-title="close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="mobile-view-options">
+            <button class="mobile-option-btn active" data-days="1">
+                <span data-i18n="view1day">1 Tag</span>
+            </button>
+            <button class="mobile-option-btn" data-days="3">
+                <span data-i18n="view3days">3 Tage</span>
+            </button>
+            <button class="mobile-option-btn" data-days="5">
+                <span data-i18n="view5days">5 Tage</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Popup -->
+    <div class="mobile-popup" id="mobileMenuPopup">
+        <div class="mobile-popup-header">
+            <span class="mobile-popup-title" data-i18n="menu">Menü</span>
+            <button class="mobile-popup-close" id="closeMenuPopup" data-i18n-title="close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="mobile-menu-options">
+            <button class="mobile-option-btn" id="mobileLogout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span data-i18n="logout">Abmelden</span>
+            </button>
+            <button class="mobile-option-btn" id="mobileSettings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" y1="21" x2="4" y2="14"></line>
+                    <line x1="4" y1="10" x2="4" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12" y2="3"></line>
+                    <line x1="20" y1="21" x2="20" y2="16"></line>
+                    <line x1="20" y1="12" x2="20" y2="3"></line>
+                    <line x1="1" y1="14" x2="7" y2="14"></line>
+                    <line x1="9" y1="8" x2="15" y2="8"></line>
+                    <line x1="17" y1="16" x2="23" y2="16"></line>
+                </svg>
+                <span data-i18n="settings">Einstellungen</span>
+            </button>
+            <button class="mobile-option-btn" id="mobileRefresh">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                <span data-i18n="refresh">Sync</span>
+            </button>
+            <button class="mobile-option-btn" id="mobileRamble">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+                <span data-i18n="ramble">Ramble</span>
+            </button>
+            <button class="mobile-option-btn" id="mobileSelectMode">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 11 12 14 22 4"></polyline>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+                <span data-i18n="selectionMode">Auswahlmodus</span>
+            </button>
+            <button class="mobile-option-btn" id="mobilePausedTasks">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="6" y="4" width="4" height="16"></rect>
+                    <rect x="14" y="4" width="4" height="16"></rect>
+                </svg>
+                <span data-i18n="pausedTasks">Pausierte Aufgaben</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Search Popup -->
+    <div class="mobile-popup" id="mobileSearchPopup">
+        <div class="mobile-popup-header">
+            <span class="mobile-popup-title" data-i18n="search">Suche</span>
+            <button class="mobile-popup-close" id="closeSearchPopup" data-i18n-title="close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div style="position: relative; width: 100%;">
+            <input type="text" id="mobileSearchInput" class="search-input" placeholder="Suchen..." data-i18n-placeholder="searchPlaceholder" style="width: 100%; padding-left: 2.5rem;">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; pointer-events: none;">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <div class="search-dropdown" id="mobileSearchDropdown"></div>
+        </div>
+    </div>
+
+    <div class="modal-menu-dropdown task-context-menu" id="taskContextMenu"></div>
+
+    <!-- Focus Mode -->
+    <div class="focus-mode-overlay" id="focusModeOverlay" style="display: none;">
+        <div class="focus-mode-backdrop" id="focusModeBackdrop"></div>
+        <div class="focus-mode-body" id="focusModeBody"></div>
+    </div>
+
+    <!-- Undo Toast -->
+    <div class="undo-toast" id="undoToast">
+        <span class="undo-toast-message" id="undoToastMessage"></span>
+        <button class="undo-toast-btn" id="undoToastBtn" type="button" data-i18n="undo">Rückgängig</button>
+    </div>
+
+    <!-- Paused Recurring Tasks Modal -->
+    <div class="task-modal" id="pausedTasksModal" style="display: none;">
+        <div class="modal-overlay" id="pausedTasksModalOverlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 data-i18n="pausedTasks">Pausierte Aufgaben</h2>
+                <div class="modal-header-actions">
+                    <button class="modal-close" id="closePausedTasksModal" type="button" data-i18n-title="close">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="paused-tasks-list" id="pausedTasksList"></div>
+        </div>
+    </div>
+
+    <script src="js/translations.js?v=2.8.58"></script>
+    <script src="js/firebase-config.js?v=2.8.3"></script>
+    <script src="js/plugins.js?v=2.8.89"></script>
+    <script src="plugins/task-api/plugin.js?v=2.8.89"></script>
+    <script src="plugins/google-calendar/plugin.js?v=2.8.89"></script>
+    <script src="js/auth.js?v=2.8.3"></script>
+    <script src="js/local-backend.js?v=2.8.89"></script>
+    <script src="js/firestore.js?v=2.8.68"></script>
+    <script src="js/datepicker.js?v=2.8.3"></script>
+    <script src="js/colorpicker.js?v=2.8.3"></script>
+    <script src="js/taskparser.js?v=2.8.3"></script>
+    <script src="js/ramble.js?v=2.8.3"></script>
+    <script src="js/search.js?v=2.8.34"></script>
+    <script src="js/sevenflow/mobile-nav-manager.js?v=2.8.8"></script>
+    <script src="js/sevenflow/i18n-manager.js?v=2.8.3"></script>
+    <script src="js/sevenflow/notifications-manager.js?v=2.8.3"></script>
+    <script src="js/sevenflow/pwa-manager.js?v=2.8.3"></script>
+    <script src="js/sevenflow/dragdrop-manager.js?v=2.8.87"></script>
+    <script src="js/sevenflow/backlog-tombstones.js?v=2.8.88"></script>
+    <script src="js/sevenflow.js?v=2.8.88"></script>
+</body>
+</html>
