@@ -1,27 +1,17 @@
 # Publishing SevenFlow Publicly
 
-Use a fresh empty GitHub repository for the public release. Do not make the old private repository public, because local and remote branches may still contain historical development commits that are not part of the clean public history.
-
-## Public Branch
-
-The public-ready branch is:
-
-```bash
-codex/open-source-prep
-```
-
-It intentionally has a short, clean history.
+This repository is intended to be published from a clean `main` branch with a fresh public history. Do not replace it with the old private development repository, because old local or remote branches may contain historical experiments, provider-specific setup, or obsolete integration code.
 
 ## Safe Push
 
-After creating an empty GitHub repository, add its URL as a new remote, then push only the public branch as `main`:
+After creating an empty GitHub repository, add its URL and push only `main`:
 
 ```bash
-git remote add public git@github.com:YOUR_ACCOUNT/sevenflow.git
-git push public codex/open-source-prep:main
+git remote add origin git@github.com:YOUR_ACCOUNT/sevenflow.git
+git push -u origin main
 ```
 
-Do not run:
+Do not run these commands against the old private repository:
 
 ```bash
 git push --all
@@ -40,7 +30,7 @@ git log --oneline HEAD
 git rev-list --count HEAD
 ```
 
-Expected public history length for the initial release is small. At the time this document was written it was 3 commits.
+The initial public repository should have a very small history. A one-commit initial public release is preferred.
 
 ## Ignored Local Files
 
