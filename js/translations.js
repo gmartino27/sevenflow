@@ -241,6 +241,7 @@ const translations = {
         saveAndClose: "Speichern",
         discardChanges: "Verwerfen",
         rambleTranscriptLabel: "Gesprochener Text:",
+        rambleTranscriptPlaceholder: "Aufgaben hier eingeben oder per Sprache aufnehmen...",
         ramblePreviewLabel: "Erkannte Aufgaben:",
 
         // Import
@@ -501,6 +502,7 @@ const translations = {
         saveAndClose: "Save",
         discardChanges: "Discard",
         rambleTranscriptLabel: "Spoken text:",
+        rambleTranscriptPlaceholder: "Enter tasks here or record them by voice...",
         ramblePreviewLabel: "Recognized tasks:",
 
         // Import

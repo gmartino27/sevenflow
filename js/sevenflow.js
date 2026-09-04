@@ -6695,7 +6695,7 @@ openTaskModal(date, task, backlogId = null) {
 
         // Check if rambleManager exists
         if (!this.rambleManager) {
-            alert('Spracherkennung nicht verfügbar');
+            alert(t.rambleNotSupported);
             return;
         }
 
