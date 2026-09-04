@@ -1,0 +1,26 @@
+services:
+  sevenflow:
+    build: .
+    container_name: sevenflow
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8000
+      SEVENFLOW_LOCAL_AUTH: "true"
+      SEVENFLOW_LOCAL_USER_EMAIL: admin@sevenflow.local
+      SEVENFLOW_LOCAL_USER_PASSWORD: sevenflow
+      SEVENFLOW_LOCAL_USER_ID: local-user
+      SEVENFLOW_LOCAL_SESSION_SECRET: change-this-local-secret
+    volumes:
+      - sevenflow-data:/app/.sevenflow-data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8000/login.html"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  sevenflow-data:

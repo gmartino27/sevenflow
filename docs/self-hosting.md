@@ -23,6 +23,23 @@ Default local credentials:
 
 Local data is stored in `.sevenflow-data/data.json`.
 
+## Docker Compose
+
+Use this when you want the fastest self-hosted setup with persistent local JSON storage. Make sure Docker is running first.
+
+```bash
+docker compose up --build
+```
+
+Open `http://localhost:8000/login.html`.
+
+Default Docker credentials:
+
+- Email: `admin@sevenflow.local`
+- Password: `sevenflow`
+
+Data is stored in the `sevenflow-data` Docker volume. Before exposing SevenFlow to another device or network, change the credentials and session secret in `docker-compose.yml`.
+
 Change the credentials before exposing the server outside your machine:
 
 ```bash
@@ -80,7 +97,7 @@ For a real server, run the Node process behind HTTPS:
 - nginx
 - Apache reverse proxy
 - a PaaS that supports Node.js
-- a Docker container, once Docker packaging exists
+- the included Docker Compose setup
 
 ## Optional Plugins
 

@@ -10,6 +10,7 @@
   <a href="#why-sevenflow">Why</a> |
   <a href="#features">Features</a> |
   <a href="#quick-start-local-mode">Quick start</a> |
+  <a href="#docker">Docker</a> |
   <a href="#android-app-coming-soon">Android</a> |
   <a href="#self-hosting">Self-hosting</a> |
   <a href="#plugins">Plugins</a>
@@ -110,6 +111,35 @@ Local data is stored in:
 ```
 
 Change the credentials with environment variables before exposing the server to another device or network.
+
+## Docker
+
+The quickest self-hosted setup is the bundled Docker Compose file. It runs SevenFlow in local JSON mode, without Firebase and without Netlify. Make sure Docker is running first.
+
+```bash
+docker compose up --build
+```
+
+Then open:
+
+```text
+http://localhost:8000/login.html
+```
+
+Default Docker credentials:
+
+```text
+Email: admin@sevenflow.local
+Password: sevenflow
+```
+
+Data is persisted in the Docker volume `sevenflow-data`, mounted at `/app/.sevenflow-data` inside the container.
+
+Before exposing SevenFlow to a network, change at least these values in `docker-compose.yml`:
+
+- `SEVENFLOW_LOCAL_USER_EMAIL`
+- `SEVENFLOW_LOCAL_USER_PASSWORD`
+- `SEVENFLOW_LOCAL_SESSION_SECRET`
 
 ## Hosted Firebase Setup
 
