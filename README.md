@@ -1,31 +1,80 @@
+<p align="center">
+  <img src="assets/branding/sevenflow-logo-horizontal.png" alt="SevenFlow" width="420">
+</p>
+
+<p align="center">
+  <strong>A calm, open-source weekly planner for people who want to see their work instead of managing a database of tasks.</strong>
+</p>
+
+<p align="center">
+  <a href="#why-sevenflow">Why</a> |
+  <a href="#features">Features</a> |
+  <a href="#quick-start-local-mode">Quick start</a> |
+  <a href="#self-hosting">Self-hosting</a> |
+  <a href="#plugins">Plugins</a>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/sevenflow-week-5-day.svg" alt="SevenFlow 5 day weekly planning view" width="900">
+</p>
+
 # SevenFlow
 
-SevenFlow is an open-source task planning app focused on weekly planning, inbox capture, recurring tasks, reminders, backlog columns, backup export/import, and optional API access.
+SevenFlow is an open-source task planning app built around a simple idea: your week should be visible, lightweight, and easy to adjust.
+
+It is designed for people who like weekly planning tools such as [Tweek](https://tweek.so/), TeuxDeux, Sunsama-style day planning, or paper planners, but want something self-hostable, hackable, and focused on fast task capture instead of project-management ceremony.
 
 SevenFlow supports two operating modes:
 
-- hosted mode with Firebase and optional Netlify Functions
-- local self-hosted mode with the bundled Node server and JSON file storage
+- Hosted mode with Firebase and optional Netlify Functions.
+- Local self-hosted mode with the bundled Node server and JSON file storage.
 
-The hosted Firebase/Netlify setup remains supported for existing installations. The local mode is intended for people who want to run SevenFlow on their own computer or server without creating Firebase or Netlify accounts.
+The original hosted Firebase/Netlify setup remains supported. The local mode is intended for people who want to run SevenFlow on their own computer or server without creating Firebase or Netlify accounts.
+
+## Why SevenFlow
+
+SevenFlow was built because many task apps become too heavy for everyday planning. They are powerful, but they often force you to think in projects, statuses, priorities, databases, and dashboards before you have even decided what you want to do today.
+
+SevenFlow takes the opposite approach:
+
+- Plan visually across a few days instead of hiding everything in lists.
+- Capture unscheduled tasks in an inbox without polluting the week.
+- Keep recurring tasks simple and predictable.
+- Move work between today, tomorrow, backlog, and inbox quickly.
+- Keep the core app small, with optional integrations handled through plugins.
+
+It is not trying to replace a full project-management suite. It is meant to be the place where your week becomes clear.
+
+## App Preview
+
+### 5 Day View
+
+<p align="center">
+  <img src="docs/screenshots/sevenflow-week-5-day.svg" alt="SevenFlow 5 day weekly planning view" width="900">
+</p>
+
+### 3 Day Focused View
+
+<p align="center">
+  <img src="docs/screenshots/sevenflow-week-3-day.svg" alt="SevenFlow 3 day focused planning view" width="720">
+</p>
 
 ## Features
 
-- Weekly task planning with desktop 3, 5, or 7 day views and mobile 1, 3, or 5 day views
-- Inbox for unscheduled tasks
-- Three backlog columns
-- Recurring tasks
-- Reminders
-- Tags, deadlines, subtasks, colors, and attachments
-- Backup export/import as JSON
-- Optional task API plugin for creating and reading tasks
-- Optional Google Calendar sync
-
-## Requirements
-
-- Node.js and npm
-- Firebase project, only for hosted Firebase mode
-- Netlify account, only if you want to deploy API functions with Netlify
+- Weekly task planning with desktop 3, 5, or 7 day views.
+- Mobile-friendly 1, 3, or 5 day views.
+- Inbox for tasks that are not scheduled yet.
+- Three backlog columns for flexible planning beyond the visible week.
+- Optional notepad area instead of backlog columns.
+- Recurring tasks, including daily, weekly, monthly, yearly, and biweekly tasks.
+- Reminders, tags, deadlines, colors, subtasks, and attachments.
+- Drag and drop sorting across days, backlog, and inbox.
+- Quick actions for moving tasks to today, tomorrow, inbox, or backlog.
+- Search by title and task content.
+- Backup export/import as JSON.
+- Optional task API plugin for creating and reading tasks.
+- Optional Google Calendar sync plugin.
+- Optional Google Login plugin.
 
 ## Quick Start: Local Mode
 
@@ -36,48 +85,62 @@ npm install
 npm run start:local
 ```
 
-Then open `http://127.0.0.1:8000/login.html`.
+Then open:
+
+```text
+http://127.0.0.1:8000/login.html
+```
 
 Default local credentials:
 
-- Email: `admin@sevenflow.local`
-- Password: `sevenflow`
+```text
+Email: admin@sevenflow.local
+Password: sevenflow
+```
 
-Local data is stored in `.sevenflow-data/data.json`. Change the credentials with environment variables before exposing the server to another device or network.
+Local data is stored in:
+
+```text
+.sevenflow-data/data.json
+```
+
+Change the credentials with environment variables before exposing the server to another device or network.
 
 ## Hosted Firebase Setup
 
-1. Install dependencies:
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Copy the environment example:
+Copy the environment example:
 
 ```bash
 cp .env.example .env
 ```
 
-3. Fill in your Firebase and optional integration values in `.env`.
-
-4. Generate the runtime Firebase config:
+Fill in your Firebase and optional integration values in `.env`, then generate the runtime Firebase config:
 
 ```bash
 npm run build
 ```
 
-5. Start a local static server:
+Start a local static server:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Then open:
 
-This static mode is enough for the app UI, Firebase login, and Firebase sync. API routes such as `/api/tasks/create` need the bundled `task-api` plugin plus either Netlify Functions or the self-hosted Node server below.
+```text
+http://localhost:8000
+```
 
-## Self-Hosting Without Netlify
+This static mode is enough for the app UI, Firebase login, and Firebase sync. API routes such as `/api/tasks/create` need the bundled `task-api` plugin plus either Netlify Functions or the self-hosted Node server.
+
+## Self-Hosting
 
 SevenFlow can run on Linux, macOS, or Windows with Node.js.
 
@@ -90,11 +153,17 @@ npm start
 
 The server:
 
-- generates `js/firebase-config.js` from `.env`
-- serves the static app
-- exposes plugin API routes under `/api/...` when the related plugin is enabled
+- Generates `js/firebase-config.js` from `.env`.
+- Serves the static app.
+- Exposes plugin API routes under `/api/...` when the related plugin is enabled.
 
-Open `http://localhost:8000` or set another port:
+Open:
+
+```text
+http://localhost:8000
+```
+
+Or set another port:
 
 ```bash
 PORT=3000 npm start
@@ -108,14 +177,14 @@ For the Firebase-free JSON-backed mode:
 npm run start:local
 ```
 
-Set these variables to choose your own local login:
+Useful local mode variables:
 
 - `SEVENFLOW_LOCAL_USER_EMAIL`
 - `SEVENFLOW_LOCAL_USER_PASSWORD`
 - `SEVENFLOW_LOCAL_USER_ID`
 - `SEVENFLOW_LOCAL_SESSION_SECRET`
 
-## Firebase
+## Firebase Data Model
 
 SevenFlow stores data under the signed-in user:
 
@@ -124,48 +193,7 @@ SevenFlow stores data under the signed-in user:
 - `users/{uid}/backlogs/titles`
 - `users/{uid}/settings/preferences`
 
-Deploy the included Firestore and Storage rules to your Firebase project before using the app with real users.
-
-## Optional API Plugin
-
-The API is provided by the `task-api` plugin. It allows users to create and read tasks via an API key generated in the app settings. It works either through Netlify Functions or through the self-hosted Node server.
-
-Required environment variables for API functions:
-
-- `FIREBASE_SERVICE_ACCOUNT_JSON`
-- `TASK_API_ENCRYPTION_SECRET`
-- `SEVENFLOW_API_BASE_URL`
-- `SEVENFLOW_PLUGINS=task-api`
-
-Leave `SEVENFLOW_API_BASE_URL` empty when the API runs on the same domain as the app.
-
-## Backend Modes
-
-SevenFlow currently has two backend modes:
-
-Hosted Firebase mode:
-
-- Authentication: Firebase Auth
-- Database: Firestore
-- Files: Firebase Storage
-- API admin access: Firebase Admin SDK
-
-Local JSON mode:
-
-- Authentication: local Node server session
-- Database: `.sevenflow-data/data.json`
-- Files: local mode does not aim to replace production file storage yet
-- API: disabled in the UI for local mode while the hosted API remains available for Firebase mode
-
-## Future Backend Direction
-
-To make SevenFlow production-ready without Firebase, the next step should be a storage/auth adapter boundary rather than a second database bolted onto the current code. A good target would be:
-
-- `firebase` adapter for the current hosted version
-- `self-hosted` adapter with server-side auth, SQLite or Postgres, and local/S3-compatible file storage
-- one shared client contract for tasks, settings, backlogs, inbox, recurring tasks, and attachments
-
-That would let people run SevenFlow on their own Linux server, Mac, Windows machine, Docker host, or NAS without requiring Firebase.
+Deploy the included Firestore and Storage rules before using the app with real users.
 
 ## Plugins
 
@@ -177,41 +205,60 @@ SEVENFLOW_PLUGINS=task-api,google-login,google-calendar
 
 Bundled plugins:
 
-- `task-api`: adds API key management in settings and enables task API routes
-- `google-login`: adds Google sign-in/register buttons to the login page
-- `google-calendar`: adds Google Calendar settings and calendar-to-task sync
+- `task-api`: Adds API key management in settings and enables task API routes.
+- `google-login`: Adds Google sign-in/register buttons to the login page.
+- `google-calendar`: Adds Google Calendar settings and calendar-to-task sync.
 
-## Optional Google Calendar
+### Task API Plugin
 
-Google Calendar sync is provided by the `google-calendar` plugin. It uses a Google OAuth Web Client ID with read-only calendar access.
+Required environment variables:
 
-Required environment variable:
+- `FIREBASE_SERVICE_ACCOUNT_JSON`
+- `TASK_API_ENCRYPTION_SECRET`
+- `SEVENFLOW_API_BASE_URL`
+- `SEVENFLOW_PLUGINS=task-api`
+
+Leave `SEVENFLOW_API_BASE_URL` empty when the API runs on the same domain as the app.
+
+### Google Calendar Plugin
+
+Required environment variables:
 
 - `GOOGLE_CALENDAR_CLIENT_ID`
 - `SEVENFLOW_PLUGINS=google-calendar`
 
-## Optional Google Login
+Google Calendar sync uses a Google OAuth Web Client ID with read-only calendar access. For public production use, Google may require OAuth app verification.
 
-Google Login is provided by the `google-login` plugin.
+### Google Login Plugin
 
 Required environment variable:
 
 - `SEVENFLOW_PLUGINS=google-login`
 
-For public production use, Google may require OAuth app verification.
+## Backend Modes
 
-## Plugin Direction
+Hosted Firebase mode:
 
-SevenFlow is a good candidate for internal plugin-style modules. A pragmatic first step is to move integrations such as Google Calendar into isolated modules with a small app-facing contract:
+- Authentication: Firebase Auth.
+- Database: Firestore.
+- Files: Firebase Storage.
+- API admin access: Firebase Admin SDK.
 
-```js
-registerIntegration({
-  id: 'google-calendar',
-  init(app) {},
-  renderSettings(app) {},
-  sync(app) {}
-});
-```
+Local JSON mode:
+
+- Authentication: Local Node server session.
+- Database: `.sevenflow-data/data.json`.
+- Files: Local mode does not aim to replace production file storage yet.
+- API: Disabled in the UI for local mode while the hosted API remains available for Firebase mode.
+
+## Future Direction
+
+SevenFlow is moving toward a clearer adapter and plugin architecture:
+
+- `firebase` adapter for the current hosted version.
+- `self-hosted` adapter with server-side auth, SQLite or Postgres, and local/S3-compatible file storage.
+- One shared client contract for tasks, settings, backlogs, inbox, recurring tasks, and attachments.
+- Optional integrations distributed as plugins instead of being hardwired into the core app.
 
 Loading untrusted third-party plugins directly in the browser is not recommended until the security model is explicit.
 
@@ -229,10 +276,16 @@ Run the Firestore rules and API helper tests:
 npm run test:rules
 ```
 
-## Publishing
+## Documentation
 
-See `docs/publishing.md` before publishing SevenFlow to a public GitHub repository.
+- `docs/self-hosting.md`: Self-hosting notes.
+- `docs/backend-adapters.md`: Backend adapter direction.
+- `docs/publishing.md`: Public GitHub publishing checklist.
 
 ## License
 
 MIT
+
+## Trademark Note
+
+SevenFlow is not affiliated with Tweek, TeuxDeux, Sunsama, or any other planning product mentioned here. Product names are used only to describe the category of weekly planning tools.

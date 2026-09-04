@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="900" viewBox="0 0 1080 900" role="img" aria-labelledby="title desc">
+  <title id="title">SevenFlow 3 day focused planning view</title>
+  <desc id="desc">A compact SevenFlow planning screen with three focused day columns and a small inbox preview.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06101f"/>
+      <stop offset="1" stop-color="#1e3a8a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#66d8ff"/>
+      <stop offset="1" stop-color="#3b82f6"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="22" stdDeviation="28" flood-color="#020617" flood-opacity="0.42"/>
+    </filter>
+    <style>
+      .ui { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .card { fill: #101b30; stroke: #334155; stroke-width: 1; }
+      .task { fill: #16233b; stroke: #334155; stroke-width: 1; }
+    </style>
+  </defs>
+  <rect width="1080" height="900" rx="38" fill="url(#bg)"/>
+  <circle cx="920" cy="110" r="220" fill="#38bdf8" opacity="0.10"/>
+  <circle cx="160" cy="750" r="250" fill="#2563eb" opacity="0.16"/>
+
+  <g class="ui" filter="url(#shadow)">
+    <rect x="60" y="56" width="960" height="786" rx="34" fill="#0f172a" stroke="#24324a"/>
+    <g transform="translate(98 92)">
+      <rect width="46" height="46" rx="13" fill="url(#accent)"/>
+      <text x="62" y="31" font-size="28" font-weight="800"><tspan fill="#eaf2ff">Seven</tspan><tspan fill="#60a5fa">Flow</tspan></text>
+    </g>
+    <text x="540" y="207" text-anchor="middle" font-size="25" font-weight="800" fill="#eaf2ff">March 12 - 14, 2026</text>
+
+    <g transform="translate(96 250)">
+      <g>
+        <rect width="272" height="430" rx="24" class="card"/>
+        <rect width="272" height="84" rx="24" fill="#1e3a8a"/>
+        <path d="M0 58h272v36H0z" fill="#1e3a8a"/>
+        <text x="136" y="34" text-anchor="middle" font-size="14" font-weight="800" fill="#cbd5e1" letter-spacing=".12em">THURSDAY</text>
+        <text x="136" y="68" text-anchor="middle" font-size="32" font-weight="900" fill="#ffffff">12</text>
+        <rect x="18" y="112" width="236" height="62" rx="16" fill="#1d4ed8" stroke="#60a5fa"/>
+        <text x="40" y="151" font-size="18" font-weight="700" fill="#ffffff">Deep work block</text>
+        <rect x="18" y="190" width="236" height="62" rx="16" class="task"/>
+        <text x="40" y="228" font-size="17" fill="#e2e8f0">Magnesium</text>
+        <rect x="18" y="268" width="236" height="62" rx="16" class="task"/>
+        <text x="40" y="306" font-size="17" fill="#e2e8f0">Write API docs</text>
+      </g>
+      <g transform="translate(312 0)">
+        <rect width="272" height="430" rx="24" class="card"/>
+        <rect width="272" height="84" rx="24" fill="#1d283d"/>
+        <path d="M0 58h272v36H0z" fill="#1d283d"/>
+        <text x="136" y="34" text-anchor="middle" font-size="14" font-weight="800" fill="#94a3b8" letter-spacing=".12em">FRIDAY</text>
+        <text x="136" y="68" text-anchor="middle" font-size="32" font-weight="900" fill="#eaf2ff">13</text>
+        <rect x="18" y="112" width="236" height="62" rx="16" class="task"/>
+        <text x="40" y="151" font-size="17" fill="#e2e8f0">School pickup</text>
+        <rect x="18" y="190" width="236" height="62" rx="16" class="task"/>
+        <text x="40" y="228" font-size="17" fill="#e2e8f0">Trash out</text>
+        <rect x="18" y="268" width="236" height="62" rx="16" fill="#0d1728" stroke="#334155" stroke-dasharray="6 6"/>
+        <text x="40" y="306" font-size="17" fill="#64748b">New task...</text>
+      </g>
+      <g transform="translate(624 0)">
+        <rect width="272" height="430" rx="24" class="card"/>
+        <rect width="272" height="84" rx="24" fill="#1d283d"/>
+        <path d="M0 58h272v36H0z" fill="#1d283d"/>
+        <text x="136" y="34" text-anchor="middle" font-size="14" font-weight="800" fill="#94a3b8" letter-spacing=".12em">SATURDAY</text>
+        <text x="136" y="68" text-anchor="middle" font-size="32" font-weight="900" fill="#eaf2ff">14</text>
+        <rect x="18" y="112" width="236" height="62" rx="16" class="task"/>
+        <text x="40" y="151" font-size="17" fill="#e2e8f0">Groceries</text>
+        <rect x="18" y="190" width="236" height="62" rx="16" class="task"/>
+        <text x="40" y="228" font-size="17" fill="#e2e8f0">Clean kitchen</text>
+      </g>
+    </g>
+
+    <g transform="translate(96 716)">
+      <rect width="896" height="76" rx="22" fill="#101b30" stroke="#334155"/>
+      <text x="24" y="32" font-size="16" font-weight="800" fill="#eaf2ff">Inbox</text>
+      <rect x="92" y="18" width="208" height="40" rx="13" fill="#16233b" stroke="#334155"/>
+      <text x="112" y="44" font-size="15" fill="#cbd5e1">Capture idea</text>
+      <rect x="318" y="18" width="208" height="40" rx="13" fill="#16233b" stroke="#334155"/>
+      <text x="338" y="44" font-size="15" fill="#cbd5e1">#Open source</text>
+      <rect x="544" y="18" width="208" height="40" rx="13" fill="#16233b" stroke="#334155"/>
+      <text x="564" y="44" font-size="15" fill="#cbd5e1">Read later</text>
+    </g>
+  </g>
+</svg>
