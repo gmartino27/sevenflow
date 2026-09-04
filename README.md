@@ -23,7 +23,7 @@
 
 SevenFlow is an open-source task planning app built around a simple idea: your week should be visible, lightweight, and easy to adjust.
 
-It is designed for people who like weekly planning tools such as [Tweek](https://tweek.so/), TeuxDeux, Sunsama-style day planning, or paper planners, but want something self-hostable, hackable, and focused on fast task capture instead of project-management ceremony.
+It is designed for people who prefer visual weekly planning, fast task capture, and a self-hostable workflow without project-management ceremony.
 
 SevenFlow supports two operating modes:
 
@@ -291,6 +291,3 @@ npm run test:rules
 
 MIT
 
-## Trademark Note
-
-SevenFlow is not affiliated with Tweek, TeuxDeux, Sunsama, or any other planning product mentioned here. Product names are used only to describe the category of weekly planning tools.
