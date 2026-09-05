@@ -265,3 +265,18 @@ class RambleManager {
 
 // Make available globally
 window.RambleManager = RambleManager;
+
+(function () {
+    if (!window.SevenFlowPlugins) return;
+
+    window.SevenFlowPlugins.register({
+        id: 'ramble',
+        appHooks: {
+            afterCoreReady(app) {
+                if (typeof app.setupRamble === 'function') {
+                    app.setupRamble();
+                }
+            }
+        }
+    });
+})();

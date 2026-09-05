@@ -78,6 +78,7 @@ An Android app already exists and is being tested, but it still needs final poli
 - Quick actions for moving tasks to today, tomorrow, inbox, or backlog.
 - Search by title and task content.
 - Backup export/import as JSON.
+- Optional Ramble plugin for voice/text task capture.
 - Optional task API plugin for creating and reading tasks.
 - Optional Google Calendar sync plugin.
 - Optional Google Login plugin.
@@ -232,43 +233,9 @@ Deploy the included Firestore and Storage rules before using the app with real u
 
 ## Plugins
 
-SevenFlow keeps optional integrations outside the core app. Enable bundled plugins with:
+Optional integrations are documented on their own page: [`docs/plugins.md`](docs/plugins.md).
 
-```bash
-SEVENFLOW_PLUGINS=task-api,google-login,google-calendar
-```
-
-Bundled plugins:
-
-- `task-api`: Adds API key management in settings and enables task API routes.
-- `google-login`: Adds Google sign-in/register buttons to the login page.
-- `google-calendar`: Adds Google Calendar settings and calendar-to-task sync.
-
-### Task API Plugin
-
-Required environment variables:
-
-- `FIREBASE_SERVICE_ACCOUNT_JSON`
-- `TASK_API_ENCRYPTION_SECRET`
-- `SEVENFLOW_API_BASE_URL`
-- `SEVENFLOW_PLUGINS=task-api`
-
-Leave `SEVENFLOW_API_BASE_URL` empty when the API runs on the same domain as the app.
-
-### Google Calendar Plugin
-
-Required environment variables:
-
-- `GOOGLE_CALENDAR_CLIENT_ID`
-- `SEVENFLOW_PLUGINS=google-calendar`
-
-Google Calendar sync uses a Google OAuth Web Client ID with read-only calendar access. For public production use, Google may require OAuth app verification.
-
-### Google Login Plugin
-
-Required environment variable:
-
-- `SEVENFLOW_PLUGINS=google-login`
+Bundled plugins include Ramble, task API, Google Login, and Google Calendar. Enable only what you need with `SEVENFLOW_PLUGINS`.
 
 ## Backend Modes
 
@@ -314,6 +281,7 @@ npm run test:rules
 ## Documentation
 
 - `docs/self-hosting.md`: Self-hosting notes.
+- `docs/plugins.md`: Bundled plugin setup.
 - `docs/backend-adapters.md`: Backend adapter direction.
 - `docs/publishing.md`: Public GitHub publishing checklist.
 

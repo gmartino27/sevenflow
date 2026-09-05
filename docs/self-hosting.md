@@ -104,16 +104,17 @@ For a real server, run the Node process behind HTTPS:
 Enable bundled plugins with `SEVENFLOW_PLUGINS`:
 
 ```bash
-SEVENFLOW_PLUGINS=task-api,google-login,google-calendar
+SEVENFLOW_PLUGINS=ramble,task-api,google-login,google-calendar
 ```
 
 Available bundled plugins:
 
+- `ramble`: voice/text task capture and local parsing
 - `task-api`: API key management and `/api/tasks/...` routes
 - `google-login`: Google login/register buttons
 - `google-calendar`: Google Calendar sync settings
 
-The local JSON mode does not enable plugins by default.
+See `docs/plugins.md` for plugin-specific setup. The local JSON mode does not enable plugins by default.
 
 ## Production Firebase-Free Target
 

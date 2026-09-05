@@ -131,6 +131,9 @@ class SevenFlowApp {
     }
 
     hasFeature(featureKey) {
+        if (featureKey === 'ramble_parsing') {
+            return !!(window.SevenFlowPlugins && window.SevenFlowPlugins.isEnabled('ramble'));
+        }
         return true;
     }
 
@@ -292,9 +295,7 @@ class SevenFlowApp {
         
         // Initialize search
         this.searchManager = new window.SearchManager(this);
-        
-        // Initialize Ramble
-        this.setupRamble();
+        this.runPluginHook('afterCoreReady');
 
         // Setup mobile navigation (after searchManager is ready)
         this.setupMobileNav();
@@ -6665,24 +6666,21 @@ openTaskModal(date, task, backlogId = null) {
             return;
         }
 
-        // Hide buttons if not supported
-        if (!isSupported) {
-            if (rambleBtn) rambleBtn.style.display = 'none';
-            if (mobileRambleBtn) mobileRambleBtn.style.display = 'none';
-            return;
+        if (isSupported) {
+            this.rambleManager.init(this.currentLanguage);
         }
-
-        // Init with current language
-        this.rambleManager.init(this.currentLanguage);
 
         // Make rambleManager globally accessible for Android bridge
         window.app = window.app || {};
         window.app.rambleManager = this.rambleManager;
 
-        // Button click handler
-        rambleBtn.addEventListener('click', () => {
-            this.openRambleModal();
-        });
+        if (rambleBtn) {
+            rambleBtn.style.display = '';
+            rambleBtn.addEventListener('click', () => {
+                this.openRambleModal();
+            });
+        }
+        if (mobileRambleBtn) mobileRambleBtn.style.display = '';
     }
 
     openRambleModal() {
@@ -6721,9 +6719,10 @@ openTaskModal(date, task, backlogId = null) {
         // Reset buttons
         const recordBtn = document.getElementById('rambleRecordBtn');
         const createBtn = document.getElementById('rambleCreateBtn');
+        const isVoiceSupported = this.rambleManager && this.rambleManager.isSupported();
         recordBtn.textContent = t.rambleStart;
         recordBtn.disabled = false;
-        recordBtn.style.display = 'block';
+        recordBtn.style.display = isVoiceSupported ? 'block' : 'none';
         createBtn.disabled = false;
         createBtn.textContent = t.rambleCreate;
         createBtn.style.display = 'none';
@@ -7070,7 +7069,7 @@ openTaskModal(date, task, backlogId = null) {
         if (error === 'not-supported') {
             errorMessage = t.rambleNotSupported;
         } else if (error === 'not-available') {
-            errorMessage = 'Spracherkennung nicht verfügbar (Google Speech Service prüfen)';
+            errorMessage = t.rambleNotAvailable;
         } else if (error === 'not-allowed' || error === 'permission-denied') {
             errorMessage = t.ramblePermissionDenied;
         }
