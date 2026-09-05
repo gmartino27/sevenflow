@@ -441,7 +441,7 @@ class SevenFlowGoogleCalendarManager {
 
     function ensureSettingsUI(app) {
         if (document.getElementById('googleCalendarConnectBtn')) return;
-        const settingsList = document.querySelector('#settingsModal .settings-list');
+        const settingsList = document.querySelector('#settingsModal .settings-list') || document.querySelector('#settingsModal .settings-body');
         if (!settingsList) return;
 
         const connectItem = createSettingsItem(`

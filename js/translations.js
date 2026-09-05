@@ -102,6 +102,7 @@ const translations = {
         // Search
         searchPlaceholder: "Suchen... (Ctrl+K)",
         searchResults: "Suchergebnisse",
+        searchNoResults: "Keine Ergebnisse gefunden",
         noResults: "Keine Ergebnisse gefunden",
         week: "Woche",
         
@@ -143,6 +144,7 @@ const translations = {
         autoMoveIncompleteTasks: "Unerledigte Aufgaben verschieben",
         autoMoveIncompleteTasksDesc: "Unerledigte Aufgaben automatisch zum nächsten Tag verschieben",
         hideCompletedTasks: "Erledigte Aufgaben ausblenden",
+        searchCompletedTasks: "Erledigte Aufgaben suchen",
         enabled: "Aktiviert",
         disabled: "Deaktiviert",
         logout: "Abmelden",
@@ -364,6 +366,7 @@ const translations = {
         // Search
         searchPlaceholder: "Search... (Ctrl+K)",
         searchResults: "Search results",
+        searchNoResults: "No results found",
         noResults: "No results found",
         week: "Week",
         
@@ -405,6 +408,7 @@ const translations = {
         autoMoveIncompleteTasks: "Move incomplete tasks",
         autoMoveIncompleteTasksDesc: "Automatically move incomplete tasks to next day",
         hideCompletedTasks: "Hide completed tasks",
+        searchCompletedTasks: "Search completed tasks",
         enabled: "Enabled",
         disabled: "Disabled",
         logout: "Logout",

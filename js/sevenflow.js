@@ -3245,6 +3245,7 @@ openSettingsModal() {
     const showBacklogSelect = document.getElementById('showBacklog');
     const autoMoveIncompleteTasksSelect = document.getElementById('autoMoveIncompleteTasks');
     const hideCompletedTasksSelect = document.getElementById('hideCompletedTasks');
+    const searchCompletedTasksSelect = document.getElementById('searchCompletedTasks');
 
     // Load current settings from in-memory object
     viewModeSelect.value = this.settings.viewMode || 'week';
@@ -3261,6 +3262,9 @@ openSettingsModal() {
     }
     if (hideCompletedTasksSelect) {
         hideCompletedTasksSelect.value = this.settings.hideCompletedTasks || 'disabled';
+    }
+    if (searchCompletedTasksSelect) {
+        searchCompletedTasksSelect.value = this.settings.searchCompletedTasks || 'disabled';
     }
     // Show mobile-only setting on mobile devices
     const isMobile = window.innerWidth <= 768;
@@ -3291,6 +3295,7 @@ openSettingsModal() {
         const showBacklogSelect = document.getElementById('showBacklog');
         const autoMoveIncompleteTasksSelect = document.getElementById('autoMoveIncompleteTasks');
         const hideCompletedTasksSelect = document.getElementById('hideCompletedTasks');
+        const searchCompletedTasksSelect = document.getElementById('searchCompletedTasks');
 
         const viewMode = viewModeSelect.value;
         const keyboardShortcut = shortcutSelect.value;
@@ -3300,6 +3305,7 @@ openSettingsModal() {
         const showBacklog = this.normalizeUnderWeekSectionMode(showBacklogSelect ? showBacklogSelect.value : 'backlog');
         const autoMoveIncompleteTasks = autoMoveIncompleteTasksSelect ? autoMoveIncompleteTasksSelect.value : 'disabled';
         const hideCompletedTasks = hideCompletedTasksSelect ? hideCompletedTasksSelect.value : 'disabled';
+        const searchCompletedTasks = searchCompletedTasksSelect ? searchCompletedTasksSelect.value : 'disabled';
 
         // Save settings
         this.saveSettings({
@@ -3311,6 +3317,7 @@ openSettingsModal() {
             showBacklog,
             autoMoveIncompleteTasks,
             hideCompletedTasks,
+            searchCompletedTasks,
             ...this.collectPluginSettings(),
             // currentView is intentionally not saved here — this modal has no
             // day-count control, and this.currentView holds whichever of the

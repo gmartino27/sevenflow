@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="css/modals.css?v=2.8.45">
     <link rel="stylesheet" href="css/backlog.css?v=2.8.51">
     <link rel="stylesheet" href="css/datepicker.css?v=2.8.54">
-    <link rel="stylesheet" href="css/search.css?v=2.8.3">
+    <link rel="stylesheet" href="css/search.css?v=2.8.94">
     <link rel="stylesheet" href="css/responsive.css?v=2.8.33">
 
     <!-- Critical CSS for instant splash screen -->
@@ -541,6 +541,13 @@
                         </select>
                     </div>
                     <div class="setting-item">
+                        <label for="searchCompletedTasks" data-i18n="searchCompletedTasks">Erledigte Aufgaben suchen</label>
+                        <select class="setting-select" id="searchCompletedTasks">
+                            <option value="disabled" data-i18n-option="disabled">Deaktiviert</option>
+                            <option value="enabled" data-i18n-option="enabled">Aktiviert</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
                         <label for="timeFormatSelect" data-i18n="timeFormat">Zeitformat</label>
                         <select class="setting-select" id="timeFormatSelect">
                             <option value="24h" data-i18n-option="timeFormat24h">24-Stunden (14:00)</option>
@@ -852,7 +859,7 @@
     <script src="js/plugins.js?v=2.8.89"></script>
     <script src="plugins/task-api/plugin.js?v=2.8.89"></script>
     <script src="plugins/pause-recurring/plugin.js?v=2.8.92"></script>
-    <script src="plugins/google-calendar/plugin.js?v=2.8.89"></script>
+    <script src="plugins/google-calendar/plugin.js?v=2.8.93"></script>
     <script src="js/auth.js?v=2.8.3"></script>
     <script src="js/local-backend.js?v=2.8.89"></script>
     <script src="js/firestore.js?v=2.8.68"></script>
@@ -860,7 +867,7 @@
     <script src="js/colorpicker.js?v=2.8.3"></script>
     <script src="js/taskparser.js?v=2.8.3"></script>
     <script src="plugins/ramble/plugin.js?v=2.8.91"></script>
-    <script src="js/search.js?v=2.8.34"></script>
+    <script src="js/search.js?v=2.8.94"></script>
     <script src="js/sevenflow/mobile-nav-manager.js?v=2.8.8"></script>
     <script src="js/sevenflow/i18n-manager.js?v=2.8.3"></script>
     <script src="js/sevenflow/notifications-manager.js?v=2.8.3"></script>

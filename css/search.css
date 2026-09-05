@@ -165,3 +165,21 @@
         max-height: 50vh;
     }
 }
+
+.search-result.completed {
+    opacity: 0.55;
+}
+
+.search-result.completed .search-result-text {
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: currentColor;
+}
+
+.search-result.completed .search-result-meta {
+    text-decoration: line-through;
+}
+
+.search-result-completed-icon {
+    color: var(--text-muted);
+}
