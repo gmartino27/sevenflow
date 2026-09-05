@@ -158,7 +158,7 @@
                             <line x1="8" y1="23" x2="16" y2="23"></line>
                         </svg>
                     </button>
-                    <button class="icon-btn" id="pausedTasksBtn" title="Pausierte Aufgaben" data-i18n-title="pausedTasks">
+                    <button class="icon-btn" id="pausedTasksBtn" title="Pausierte Aufgaben" data-i18n-title="pausedTasks" style="display: none;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="6" y="4" width="4" height="16"></rect>
                             <rect x="14" y="4" width="4" height="16"></rect>
@@ -309,7 +309,7 @@
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>
                                 <span data-i18n="menuDetachTask">Aufgabe loslösen</span>
                             </button>
-                            <button class="modal-menu-item" id="modalMenuPauseRecurring" type="button" data-i18n-title="menuPauseRecurring">
+                            <button class="modal-menu-item" id="modalMenuPauseRecurring" type="button" data-i18n-title="menuPauseRecurring" style="display: none;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <rect x="6" y="4" width="4" height="16"></rect>
                                     <rect x="14" y="4" width="4" height="16"></rect>
@@ -783,7 +783,7 @@
                 </svg>
                 <span data-i18n="selectionMode">Auswahlmodus</span>
             </button>
-            <button class="mobile-option-btn" id="mobilePausedTasks">
+            <button class="mobile-option-btn" id="mobilePausedTasks" style="display: none;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="6" y="4" width="4" height="16"></rect>
                     <rect x="14" y="4" width="4" height="16"></rect>
@@ -851,6 +851,7 @@
     <script src="js/firebase-config.js?v=2.8.3"></script>
     <script src="js/plugins.js?v=2.8.89"></script>
     <script src="plugins/task-api/plugin.js?v=2.8.89"></script>
+    <script src="plugins/pause-recurring/plugin.js?v=2.8.92"></script>
     <script src="plugins/google-calendar/plugin.js?v=2.8.89"></script>
     <script src="js/auth.js?v=2.8.3"></script>
     <script src="js/local-backend.js?v=2.8.89"></script>

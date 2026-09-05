@@ -118,7 +118,7 @@ class SevenFlowApp {
     }
 
     updateModalScrollLock() {
-        const modalIds = ['taskModal', 'settingsModal', 'confirmModal', 'rambleModal'];
+        const modalIds = ['taskModal', 'settingsModal', 'confirmModal', 'rambleModal', 'pausedTasksModal'];
         const hasOpenModal = modalIds.some((id) => {
             const el = document.getElementById(id);
             return !!el && el.style.display === 'flex';
@@ -133,6 +133,9 @@ class SevenFlowApp {
     hasFeature(featureKey) {
         if (featureKey === 'ramble_parsing') {
             return !!(window.SevenFlowPlugins && window.SevenFlowPlugins.isEnabled('ramble'));
+        }
+        if (featureKey === 'pause_recurring') {
+            return !!(window.SevenFlowPlugins && window.SevenFlowPlugins.isEnabled('pause-recurring'));
         }
         return true;
     }
@@ -3717,7 +3720,7 @@ setupModalDescriptionAutoResize() {
         }
         if (isRecurringTask) {
             const isPaused = this.getPausedRecurringIds().has(task.recurringId);
-            if (!isPaused) {
+            if (this.hasFeature('pause_recurring') && !isPaused) {
                 menuItems.push(item('pauseRecurring', this.t('menuPauseRecurring'), `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`));
             }
             menuItems.push(item('detach', this.t('menuDetachTask'), `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>`));
@@ -3859,7 +3862,7 @@ setupModalDescriptionAutoResize() {
         if (detachTaskModalBtn) detachTaskModalBtn.style.display = (!isNewTask && isRecurringTask) ? 'flex' : 'none';
         if (pauseRecurringModalBtn) {
             const isPaused = isRecurringTask && task?.recurringId ? this.getPausedRecurringIds().has(task.recurringId) : false;
-            pauseRecurringModalBtn.style.display = (!isNewTask && isRecurringTask && !isPaused) ? 'flex' : 'none';
+            pauseRecurringModalBtn.style.display = (!isNewTask && isRecurringTask && this.hasFeature('pause_recurring') && !isPaused) ? 'flex' : 'none';
         }
         if (deleteBtn) deleteBtn.style.display = isNewTask ? 'none' : 'flex';
     }
@@ -4963,12 +4966,14 @@ openTaskModal(date, task, backlogId = null) {
     // Paused Recurring Tasks
 
     getPausedRecurringIds() {
+        if (!this.hasFeature('pause_recurring')) return new Set();
         const ids = new Set();
         (this.pausedRecurring || []).forEach(p => ids.add(p.recurringId));
         return ids;
     }
 
     async pauseRecurringTask(task) {
+        if (!this.hasFeature('pause_recurring')) return;
         if (!task || !task.recurringId) return;
         if ((this.pausedRecurring || []).find(p => p.recurringId === task.recurringId)) return;
         const entry = {
@@ -4984,6 +4989,7 @@ openTaskModal(date, task, backlogId = null) {
     }
 
     async resumeRecurringTask(recurringId) {
+        if (!this.hasFeature('pause_recurring')) return;
         this.pausedRecurring = (this.pausedRecurring || []).filter(p => p.recurringId !== recurringId);
         this.settings.pausedRecurring = this.pausedRecurring;
         await this.saveSettings({ pausedRecurring: this.pausedRecurring });
@@ -4992,15 +4998,16 @@ openTaskModal(date, task, backlogId = null) {
     }
 
     openPausedTasksModal() {
+        if (!this.hasFeature('pause_recurring')) return;
         const modal = document.getElementById('pausedTasksModal');
         if (!modal) return;
         this.renderPausedTasksModal();
-        modal.style.display = 'flex';
+        this.setModalVisibility(modal, true);
     }
 
     closePausedTasksModal() {
         const modal = document.getElementById('pausedTasksModal');
-        if (modal) modal.style.display = 'none';
+        if (modal) this.setModalVisibility(modal, false);
     }
 
     renderPausedTasksModal() {

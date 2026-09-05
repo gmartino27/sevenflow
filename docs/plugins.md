@@ -1,17 +1,17 @@
 # SevenFlow Plugins
 
-SevenFlow keeps optional integrations outside the core app. The core planner can run without Google, without the task API, and without voice input.
+SevenFlow keeps optional integrations outside the core app. The core planner can run without Google, without the task API, without voice input, and without extra recurring-task controls.
 
 Enable bundled plugins with the `SEVENFLOW_PLUGINS` environment variable:
 
 ```bash
-SEVENFLOW_PLUGINS=ramble,task-api,google-login,google-calendar
+SEVENFLOW_PLUGINS=ramble,pause-recurring,task-api,google-login,google-calendar
 ```
 
 Use only the plugins you need. For example:
 
 ```bash
-SEVENFLOW_PLUGINS=ramble
+SEVENFLOW_PLUGINS=ramble,pause-recurring
 ```
 
 ## Bundled Plugins
@@ -39,6 +39,25 @@ Limitations:
 - Browser support varies. Chrome and Edge are the safest web targets.
 - Firefox and Safari may not support the same speech-recognition APIs.
 - Manual text input in the Ramble modal works even when voice recognition is unavailable.
+
+### Pause Recurring
+
+Plugin id: `pause-recurring`
+
+Adds controls for temporarily hiding a recurring task series without deleting it.
+
+What it enables:
+
+- Header button for viewing paused recurring series.
+- Mobile menu entry for paused recurring series.
+- Modal and context-menu action for pausing a recurring series.
+- Resume action inside the paused tasks modal.
+
+Requirements:
+
+- `SEVENFLOW_PLUGINS=pause-recurring`
+
+The plugin stores paused series in the normal SevenFlow settings data under `pausedRecurring`.
 
 ### Task API
 
@@ -82,26 +101,26 @@ Google Calendar sync uses a Google OAuth Web Client ID with read-only calendar a
 
 ## Local JSON Mode
 
-The local JSON mode does not enable plugins by default. You can still enable frontend-only plugins such as Ramble:
+The local JSON mode does not enable plugins by default. You can still enable frontend-only plugins such as Ramble or Pause Recurring:
 
 ```bash
-SEVENFLOW_PLUGINS=ramble npm run start:local
+SEVENFLOW_PLUGINS=ramble,pause-recurring npm run start:local
 ```
 
 The `task-api` plugin is intended for Firebase-backed installations because it relies on Firebase Admin access.
 
 ## Docker
 
-The default Docker Compose setup starts without optional plugins. To enable Ramble in Docker, edit `docker-compose.yml`:
+The default Docker Compose setup starts without optional plugins. To enable frontend-only plugins in Docker, edit `docker-compose.yml`:
 
 ```yaml
 environment:
-  SEVENFLOW_PLUGINS: ramble
+  SEVENFLOW_PLUGINS: ramble,pause-recurring
 ```
 
 For multiple plugins, use a comma-separated list:
 
 ```yaml
 environment:
-  SEVENFLOW_PLUGINS: ramble,task-api,google-calendar
+  SEVENFLOW_PLUGINS: ramble,pause-recurring,task-api,google-calendar
 ```

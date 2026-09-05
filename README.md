@@ -79,6 +79,7 @@ An Android app already exists and is being tested, but it still needs final poli
 - Search by title and task content.
 - Backup export/import as JSON.
 - Optional Ramble plugin for voice/text task capture.
+- Optional Pause Recurring plugin for temporarily hiding recurring series.
 - Optional task API plugin for creating and reading tasks.
 - Optional Google Calendar sync plugin.
 - Optional Google Login plugin.
@@ -235,7 +236,7 @@ Deploy the included Firestore and Storage rules before using the app with real u
 
 Optional integrations are documented on their own page: [`docs/plugins.md`](docs/plugins.md).
 
-Bundled plugins include Ramble, task API, Google Login, and Google Calendar. Enable only what you need with `SEVENFLOW_PLUGINS`.
+Bundled plugins include Ramble, Pause Recurring, task API, Google Login, and Google Calendar. Enable only what you need with `SEVENFLOW_PLUGINS`.
 
 ## Backend Modes
 
